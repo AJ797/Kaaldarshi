@@ -1,0 +1,54 @@
+---
+/* A live band, because that is the right motif for this company — but it
+   carries only true statements. No invented telemetry, no fake counters.
+   The track holds two identical runs and travels -50%, so the loop is
+   seamless; the duplicate is hidden from assistive tech. */
+
+interface Props {
+  items?: string[];
+}
+
+const {
+  items = [
+    'कालदर्शी',
+    'One who sees time',
+    'An information company',
+    'Inference, not reporting',
+    'Arm 01 · Udant',
+    'Arm 02 · K Research',
+    'Incorporation pending',
+    'Est. 2026',
+  ],
+} = Astro.props;
+
+const isDeva = (s: string) => /[ऀ-ॿ]/.test(s);
+---
+
+<div class="ticker">
+  <div class="ticker__track">
+    <div class="ticker__run">
+      {
+        items.map((item) => (
+          <span class="ticker__item">
+            {isDeva(item) ? (
+              <span class="deva" lang="hi">
+                {item}
+              </span>
+            ) : (
+              item
+            )}
+          </span>
+        ))
+      }
+    </div>
+    <div class="ticker__run" aria-hidden="true">
+      {
+        items.map((item) => (
+          <span class="ticker__item">
+            {isDeva(item) ? <span class="deva">{item}</span> : item}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+</div>

@@ -1,4 +1,7 @@
 ---
+import Mark from './Mark.astro';
+import { CONTACT_EMAIL } from '../lib/site';
+
 interface Props {
   variant?: 'full' | 'compact';
 }
@@ -12,6 +15,7 @@ const { variant = 'full' } = Astro.props;
       <div class="site-foot__inner wrap">
         <div class="colophon">
           <p class="colophon__mark">
+            <Mark class="colophon__glyph" />
             <span class="wordmark">Kaaldarshi</span>
             <span class="deva" lang="hi">
               कालदर्शी
@@ -39,15 +43,17 @@ const { variant = 'full' } = Astro.props;
           <a class="nav-link" href="/#entity">
             Entity
           </a>
-          <a class="nav-link" href="/#contact">
-            Contact
-          </a>
         </nav>
 
-        <p class="legal">
-          © 2026 Kaaldarshi (OPC) Private Limited. Incorporation pending; CIN on
-          issue. [CONTACT EMAIL]
-        </p>
+        <div class="site-foot__end">
+          <a class="foot-mail" href={`mailto:${CONTACT_EMAIL}`}>
+            {CONTACT_EMAIL}
+          </a>
+          <p class="legal">
+            © 2026 Kaaldarshi (OPC) Private Limited. Incorporation pending; CIN
+            on issue.
+          </p>
+        </div>
       </div>
     </footer>
   ) : (
@@ -59,6 +65,9 @@ const { variant = 'full' } = Astro.props;
         <p class="legal legal--wide">
           <slot />
         </p>
+        <a class="foot-mail" href={`mailto:${CONTACT_EMAIL}`}>
+          {CONTACT_EMAIL}
+        </a>
       </div>
     </footer>
   )
@@ -76,7 +85,7 @@ const { variant = 'full' } = Astro.props;
     gap: 40px 64px;
     justify-content: space-between;
     align-items: flex-start;
-    padding-block: 48px;
+    padding-block: 56px;
   }
 
   .site-foot__inner--compact {
@@ -90,14 +99,20 @@ const { variant = 'full' } = Astro.props;
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 16px;
   }
 
   .colophon__mark {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
+    align-items: center;
     gap: 8px 14px;
+  }
+
+  .colophon :global(.colophon__glyph) {
+    width: 30px;
+    height: auto;
+    color: var(--ink-3);
   }
 
   .wordmark {
@@ -116,7 +131,7 @@ const { variant = 'full' } = Astro.props;
   }
 
   .colophon__body {
-    max-width: 60ch;
+    max-width: 58ch;
     font-size: 14px;
     line-height: 1.7;
     color: var(--ink-3);
@@ -126,11 +141,18 @@ const { variant = 'full' } = Astro.props;
     flex: 0 1 auto;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
+  }
+
+  .site-foot__end {
+    flex: 0 1 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-start;
   }
 
   .legal {
-    flex: 0 1 260px;
     font-family: var(--font-mono);
     font-size: 11px;
     line-height: 1.7;
@@ -138,14 +160,33 @@ const { variant = 'full' } = Astro.props;
   }
 
   .legal--wide {
-    flex: 1 1 420px;
+    flex: 1 1 380px;
     max-width: 62ch;
     font-family: var(--font-body);
     font-size: 13px;
     color: var(--ink-2);
   }
 
+  .foot-mail {
+    padding-block: 6px 8px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-2);
+    text-decoration: none;
+    border-bottom: 1px solid var(--hairline-bright);
+    padding-block-end: 2px;
+    transition: color var(--quick) ease-out,
+      border-color var(--quick) ease-out;
+  }
+
+  .foot-mail:hover {
+    color: var(--ink);
+    border-color: var(--signal);
+  }
+
   .back {
+    display: inline-block;
+    padding-block: 7px;
     font-family: var(--font-mono);
     font-size: 11px;
     letter-spacing: 0.14em;

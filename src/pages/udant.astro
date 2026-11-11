@@ -3,7 +3,10 @@ import Base from '../layouts/Base.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import ScrollRail from '../components/ScrollRail.astro';
+import SectionRail from '../components/SectionRail.astro';
 import ReadingStrip from '../components/ReadingStrip.astro';
+import MarkBezel from '../components/MarkBezel.astro';
+import { UDANT_EMAIL } from '../lib/site';
 
 const nav = [
   { href: '#thesis', label: 'Thesis' },
@@ -127,10 +130,14 @@ const states = [
   <ScrollRail items={rail} />
 
   <section id="top" class="hero">
-    <div class="hero__field hero__field--right" aria-hidden="true"></div>
+    <div class="hero__field" aria-hidden="true"></div>
+    <div class="hero__mark" aria-hidden="true">
+      <MarkBezel />
+    </div>
+
     <div class="hero__inner wrap">
       <p class="kicker">
-        <span class="dot" aria-hidden="true"></span>
+        <span class="dot dot--live" aria-hidden="true"></span>
         <span class="label">Kaaldarshi · arm 01 · closed access</span>
       </p>
 
@@ -154,7 +161,7 @@ const states = [
 
   <section id="thesis" class="section">
     <div class="wrap ruled railed reveal">
-      <p class="rail label label--sm">02 / Thesis</p>
+      <SectionRail index="02" label="Thesis" />
 
       <div class="railed-body">
         <p class="t-body--ink">
@@ -187,7 +194,7 @@ const states = [
   <section id="capabilities" class="section">
     <div class="wrap ruled reveal">
       <div class="heads">
-        <p class="rail label label--sm">03 / Capabilities</p>
+        <span class="label">03 — Capabilities</span>
         <h2 class="t-h2">Five surfaces onto the same model.</h2>
       </div>
 
@@ -263,7 +270,7 @@ const states = [
   <section id="receipts" class="section">
     <div class="wrap ruled reveal">
       <div class="heads">
-        <p class="rail label label--sm">04 / Receipts</p>
+        <span class="label">04 — Receipts</span>
         <h2 class="t-h2">
           A forecast that cannot be proven wrong is not a forecast.
         </h2>
@@ -274,7 +281,7 @@ const states = [
           <div class="card__head">
             <span class="label label--sm">Forecast record</span>
             <span class="label label--sm label--signal card__state">
-              <span class="dot" aria-hidden="true"></span>Open
+              <span class="dot dot--live" aria-hidden="true"></span>Open
             </span>
           </div>
 
@@ -349,11 +356,11 @@ const states = [
   <section id="surfaces" class="section">
     <div class="wrap ruled reveal">
       <div class="heads">
-        <p class="rail label label--sm">05 / Live surfaces</p>
+        <span class="label">05 — Live surfaces</span>
         <h2 class="t-h2">Readings, against their own baselines.</h2>
       </div>
 
-      <div class="surfaces">
+      <div class="surfaces stagger">
         {
           surfaces.map((surface) => (
             <div class="surface">
@@ -382,6 +389,12 @@ const states = [
         </h2>
         <p class="access__note">
           Tell us what you analyse and who you brief. We read every one.
+        </p>
+        <p class="access__direct">
+          <span class="label">Or write directly</span>
+          <a class="access__mail" href={`mailto:${UDANT_EMAIL}`}>
+            {UDANT_EMAIL}
+          </a>
         </p>
       </div>
 
@@ -820,6 +833,30 @@ const states = [
 
   .access__form textarea:focus-visible {
     border-color: var(--ink-3);
+  }
+
+  .access__direct {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    margin-block-start: 32px;
+    padding-block-start: 24px;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .access__mail {
+    font-family: var(--font-mono);
+    font-size: clamp(15px, 1.5vw, 17px);
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--hairline-bright);
+    padding-block: 6px 4px;
+    transition: border-color var(--quick) ease-out;
+  }
+
+  .access__mail:hover {
+    border-color: var(--signal);
   }
 
   .field__opt {

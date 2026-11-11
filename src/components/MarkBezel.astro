@@ -1,0 +1,94 @@
+---
+import Mark from './Mark.astro';
+
+/* The mark sits still; a measuring bezel turns around it, driven by scroll
+   position rather than a timer — so the motion reports where you are on the
+   page instead of just being busy. The artwork itself is never distorted. */
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const CX = 500;
+const CY = 500;
+const R = 470;
+const COUNT = 72;
+
+const ticks = Array.from({ length: COUNT }, (_, i) => {
+  const major = i % 6 === 0;
+  const angle = (i / COUNT) * Math.PI * 2 - Math.PI / 2;
+  const inner = major ? R - 46 : R - 18;
+  return {
+    major,
+    x1: +(CX + Math.cos(angle) * inner).toFixed(2),
+    y1: +(CY + Math.sin(angle) * inner).toFixed(2),
+    x2: +(CX + Math.cos(angle) * R).toFixed(2),
+    y2: +(CY + Math.sin(angle) * R).toFixed(2),
+  };
+});
+---
+
+<div class:list={['markset', className]}>
+  <svg
+    class="markset__bezel"
+    viewBox="0 0 1000 1000"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <g class="markset__ring">
+      <circle
+        cx={CX}
+        cy={CY}
+        r={R - 56}
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+        opacity="0.5"></circle>
+      {
+        ticks.map((tick) => (
+          <line
+            x1={tick.x1}
+            y1={tick.y1}
+            x2={tick.x2}
+            y2={tick.y2}
+            stroke="currentColor"
+            stroke-width={tick.major ? 2 : 1}
+            opacity={tick.major ? 1 : 0.55}
+          />
+        ))
+      }
+    </g>
+  </svg>
+
+  <Mark class="markset__mark" />
+</div>
+
+<style>
+  .markset {
+    position: relative;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+  }
+
+  .markset__bezel {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--hairline-bright);
+  }
+
+  .markset__ring {
+    transform-box: view-box;
+    transform-origin: 50% 50%;
+    rotate: calc(var(--scroll) * 160deg);
+  }
+
+  .markset :global(.markset__mark) {
+    width: 84%;
+    height: auto;
+  }
+</style>

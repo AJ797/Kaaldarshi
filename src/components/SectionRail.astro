@@ -1,0 +1,17 @@
+---
+/* The section index runs vertically down the gutter with a hairline dropping
+   from it — a measuring mark on the page rather than a label stacked above a
+   heading. It turns horizontal below 860px. */
+
+interface Props {
+  index: string;
+  label: string;
+}
+
+const { index, label } = Astro.props;
+---
+
+<div class="rail">
+  <span class="rail__label">{index} — {label}</span>
+  <span class="rail__line" aria-hidden="true"></span>
+</div>

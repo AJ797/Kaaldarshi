@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import ScrollRail from '../components/ScrollRail.astro';
+import SectionRail from '../components/SectionRail.astro';
+import MarkBezel from '../components/MarkBezel.astro';
 
 const nav = [
   { href: '#areas', label: 'Areas' },
@@ -80,6 +82,9 @@ const papers = [
 
   <section id="top" class="hero">
     <div class="hero__field" aria-hidden="true"></div>
+    <div class="hero__mark" aria-hidden="true">
+      <MarkBezel />
+    </div>
     <div class="hero__inner wrap">
       <p class="kicker">
         <span class="dot" aria-hidden="true"></span>
@@ -98,7 +103,7 @@ const papers = [
 
   <section id="statement" class="section">
     <div class="wrap ruled railed reveal">
-      <p class="rail label label--sm">02 / Statement</p>
+      <SectionRail index="02" label="Statement" />
 
       <div class="railed-body">
         <p class="t-prose">
@@ -128,11 +133,11 @@ const papers = [
   <section id="areas" class="section">
     <div class="wrap ruled reveal">
       <div class="heads">
-        <p class="rail label label--sm">03 / Areas</p>
+        <span class="label">03 — Areas</span>
         <h2 class="t-h2">The open problems the systems rest on.</h2>
       </div>
 
-      <ul class="rows areas">
+      <ul class="rows areas stagger">
         {
           areas.map((area, i) => (
             <li class="area">
@@ -151,7 +156,7 @@ const papers = [
   <section id="index" class="section">
     <div class="wrap ruled reveal">
       <div class="heads heads--tight">
-        <p class="rail label label--sm">04 / Index</p>
+        <span class="label">04 — Index</span>
         <h2 class="t-h2">Published work.</h2>
       </div>
 
@@ -188,7 +193,7 @@ const papers = [
       <p class="btn-row">
         <a class="btn btn--primary" href="/#contact">Get in touch</a>
         <a class="btn" href="/udant">
-          See Udant <span aria-hidden="true">→</span>
+          See Udant <span class="btn__arrow" aria-hidden="true">→</span>
         </a>
       </p>
     </div>

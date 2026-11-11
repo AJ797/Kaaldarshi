@@ -11,6 +11,7 @@ const { title, description, ground = 'ink' } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname.replace(/^\//, ''), Astro.site)
   .href;
+const ogImage = new URL('og.svg', Astro.site).href;
 const themeColor = ground === 'paper' ? '#F4F2ED' : '#0B0C0E';
 const htmlClass = ground === 'paper' ? 'ground-paper' : undefined;
 ---
@@ -30,8 +31,9 @@ const htmlClass = ground === 'paper' ? 'ground-paper' : undefined;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
     <meta property="og:locale" content="en" />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <meta name="theme-color" content={themeColor} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -55,6 +57,10 @@ const htmlClass = ground === 'paper' ? 'ground-paper' : undefined;
   </head>
 
   <body>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="progress" aria-hidden="true"></div>
+
     <a class="skip" href="#main">Skip to content</a>
     <slot name="header" />
     <main id="main">
@@ -64,48 +70,38 @@ const htmlClass = ground === 'paper' ? 'ground-paper' : undefined;
 
     <script>
       // Astro bundles this to an external module, so script-src stays 'self'.
+      // Custom properties are set through the CSSOM, which CSP does not gate —
+      // unlike a style="" attribute, which style-src 'self' would block.
+      const root = document.documentElement;
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
         .matches;
 
-      /* --- section entrances ------------------------------------------- */
-      const revealables = Array.from(document.querySelectorAll('.reveal'));
+      /* --- scroll position, published once per frame -------------------- */
+      let ticking = false;
 
-      if (revealables.length) {
-        if (reduced || !('IntersectionObserver' in window)) {
-          revealables.forEach((el) => el.classList.add('is-in'));
-        } else {
-          const io = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (!entry.isIntersecting) return;
-                entry.target.classList.add('is-in');
-                io.unobserve(entry.target);
-              });
-            },
-            { rootMargin: '0px 0px -10% 0px', threshold: 0.06 }
-          );
-          revealables.forEach((el) => io.observe(el));
-        }
-      }
+      const publishScroll = () => {
+        ticking = false;
+        const max = root.scrollHeight - window.innerHeight;
+        const ratio = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+        root.style.setProperty('--scroll', ratio.toFixed(4));
+      };
 
-      /* --- scroll rail -------------------------------------------------- */
+      /* --- scroll rail --------------------------------------------------- */
       const rail = document.querySelector('[data-scroll-rail]');
+      let markRail = () => {};
 
       if (rail) {
-        const links = Array.from(rail.querySelectorAll('a[href^="#"]'));
-        const entries = links
+        const entries = Array.from(rail.querySelectorAll('a[href^="#"]'))
           .map((link) => {
-            const id = link.getAttribute('href').slice(1);
-            const section = document.getElementById(id);
+            const section = document.getElementById(
+              link.getAttribute('href').slice(1)
+            );
             return section ? { link, section } : null;
           })
           .filter(Boolean);
 
         if (entries.length) {
-          let queued = false;
-
-          const mark = () => {
-            queued = false;
+          markRail = () => {
             const line = window.innerHeight * 0.38;
             let active = entries[0];
 
@@ -116,10 +112,12 @@ const htmlClass = ground === 'paper' ? 'ground-paper' : undefined;
             });
 
             // At the very bottom the last section wins, even if it is short.
-            const atEnd =
+            if (
               window.innerHeight + window.scrollY >=
-              document.documentElement.scrollHeight - 4;
-            if (atEnd) active = entries[entries.length - 1];
+              root.scrollHeight - 4
+            ) {
+              active = entries[entries.length - 1];
+            }
 
             entries.forEach((entry) => {
               if (entry === active) {
@@ -129,17 +127,53 @@ const htmlClass = ground === 'paper' ? 'ground-paper' : undefined;
               }
             });
           };
-
-          const schedule = () => {
-            if (queued) return;
-            queued = true;
-            window.requestAnimationFrame(mark);
-          };
-
-          mark();
-          window.addEventListener('scroll', schedule, { passive: true });
-          window.addEventListener('resize', schedule, { passive: true });
         }
+      }
+
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(() => {
+          publishScroll();
+          markRail();
+        });
+      };
+
+      publishScroll();
+      markRail();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+
+      /* --- entrances ----------------------------------------------------- */
+      const revealables = Array.from(
+        document.querySelectorAll('.reveal, .stagger')
+      );
+
+      if (revealables.length) {
+        if (reduced || !('IntersectionObserver' in window)) {
+          revealables.forEach((el) => el.classList.add('is-in'));
+        } else {
+          const io = new IntersectionObserver(
+            (items) => {
+              items.forEach((item) => {
+                if (!item.isIntersecting) return;
+                item.target.classList.add('is-in');
+                io.unobserve(item.target);
+              });
+            },
+            // Fire 220px before the element reaches the viewport. Sections
+            // here are taller than the screen, so waiting for real
+            // intersection leaves blank voids during a fast scroll.
+            { rootMargin: '220px 0px 220px 0px', threshold: 0 }
+          );
+          revealables.forEach((el) => io.observe(el));
+        }
+      }
+
+      // The hero is above the fold, so it plays on load rather than on scroll.
+      const hero = document.querySelector('.hero');
+      if (hero) {
+        window.requestAnimationFrame(() => hero.classList.add('is-in'));
       }
 
       /* --- capability tabs ---------------------------------------------- */

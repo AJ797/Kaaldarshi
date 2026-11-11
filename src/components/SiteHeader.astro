@@ -1,4 +1,6 @@
 ---
+import Mark from './Mark.astro';
+
 interface NavLink {
   href: string;
   label: string;
@@ -18,13 +20,14 @@ const { links, cta, lockup, current } = Astro.props;
 <header class="site-head">
   <div class="site-head__inner wrap">
     <p class="lockup">
-      <a href="/" class:list={['wordmark', lockup && 'wordmark--muted']}>
-        Kaaldarshi
+      <a href="/" class:list={['home', lockup && 'home--muted']}>
+        <Mark class="home__mark" />
+        <span class="wordmark">Kaaldarshi</span>
       </a>
       {
         lockup && (
           <>
-            <span class="lockup__bar" aria-hidden="true"></span>
+            <span class="lockup__bar" aria-hidden="true" />
             <span class="lockup__arm">{lockup}</span>
           </>
         )
@@ -43,7 +46,13 @@ const { links, cta, lockup, current } = Astro.props;
           </a>
         ))
       }
-      {cta && <a class="btn btn--sm" href={cta.href}>{cta.label}</a>}
+      {
+        cta && (
+          <a class="btn btn--sm" href={cta.href}>
+            {cta.label}
+          </a>
+        )
+      }
     </nav>
   </div>
 </header>
@@ -59,16 +68,36 @@ const { links, cta, lockup, current } = Astro.props;
   .site-head__inner {
     display: flex;
     flex-wrap: wrap;
-    gap: 18px 32px;
+    gap: 16px 32px;
     align-items: center;
     justify-content: space-between;
-    padding-block: 26px;
+    padding-block: 22px;
   }
 
   .lockup {
     display: flex;
     align-items: center;
     gap: 14px;
+  }
+
+  .home {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding-block: 7px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .home :global(.home__mark) {
+    width: 34px;
+    height: auto;
+    flex: none;
+    transition: color var(--quick) ease-out;
+  }
+
+  .home:hover :global(.home__mark) {
+    color: var(--signal);
   }
 
   .wordmark,
@@ -78,17 +107,14 @@ const { links, cta, lockup, current } = Astro.props;
     font-size: 15px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    text-decoration: none;
-    color: var(--ink);
     white-space: nowrap;
   }
 
-  .wordmark--muted {
+  .home--muted {
     color: var(--ink-3);
-    transition: color var(--quick) ease-out;
   }
 
-  .wordmark--muted:hover {
+  .home--muted:hover {
     color: var(--ink);
   }
 
@@ -110,11 +136,21 @@ const { links, cta, lockup, current } = Astro.props;
   @media (max-width: 620px) {
     .site-head__inner {
       gap: 14px 24px;
-      padding-block: 18px;
+      padding-block: 16px;
     }
 
     .site-nav {
-      gap: 12px 22px;
+      gap: 12px 20px;
+    }
+
+    .home :global(.home__mark) {
+      width: 28px;
+    }
+
+    .wordmark,
+    .lockup__arm {
+      font-size: 13px;
+      letter-spacing: 0.18em;
     }
   }
 </style>
