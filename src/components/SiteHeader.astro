@@ -1,0 +1,120 @@
+---
+interface NavLink {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  links: NavLink[];
+  cta?: NavLink;
+  /** Set on an arm's page to render the "Kaaldarshi | Udant" lockup. */
+  lockup?: string;
+  current?: string;
+}
+
+const { links, cta, lockup, current } = Astro.props;
+---
+
+<header class="site-head">
+  <div class="site-head__inner wrap">
+    <p class="lockup">
+      <a href="/" class:list={['wordmark', lockup && 'wordmark--muted']}>
+        Kaaldarshi
+      </a>
+      {
+        lockup && (
+          <>
+            <span class="lockup__bar" aria-hidden="true"></span>
+            <span class="lockup__arm">{lockup}</span>
+          </>
+        )
+      }
+    </p>
+
+    <nav class="site-nav" aria-label="Primary">
+      {
+        links.map((link) => (
+          <a
+            class="nav-link"
+            href={link.href}
+            aria-current={current === link.href ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      {cta && <a class="btn btn--sm" href={cta.href}>{cta.label}</a>}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-head {
+    position: relative;
+    z-index: 10;
+    padding-inline: var(--gutter);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .site-head__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 32px;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 26px;
+  }
+
+  .lockup {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .wordmark,
+  .lockup__arm {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .wordmark--muted {
+    color: var(--ink-3);
+    transition: color var(--quick) ease-out;
+  }
+
+  .wordmark--muted:hover {
+    color: var(--ink);
+  }
+
+  .lockup__bar {
+    width: 1px;
+    height: 14px;
+    background: var(--hairline-bright);
+  }
+
+  .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 28px;
+    align-items: center;
+  }
+
+  /* Four links do not need a hamburger, but they do need to stop eating the
+     first screen once they wrap. */
+  @media (max-width: 620px) {
+    .site-head__inner {
+      gap: 14px 24px;
+      padding-block: 18px;
+    }
+
+    .site-nav {
+      gap: 12px 22px;
+    }
+  }
+</style>

@@ -1,0 +1,161 @@
+---
+interface Props {
+  variant?: 'full' | 'compact';
+}
+
+const { variant = 'full' } = Astro.props;
+---
+
+{
+  variant === 'full' ? (
+    <footer class="site-foot">
+      <div class="site-foot__inner wrap">
+        <div class="colophon">
+          <p class="colophon__mark">
+            <span class="wordmark">Kaaldarshi</span>
+            <span class="deva" lang="hi">
+              कालदर्शी
+            </span>
+          </p>
+          <p class="colophon__body">
+            Kaaldarshi is an information company. We build systems that infer
+            rather than report: what the present state of a structured system
+            implies about its next. Our work spans whichever domains that
+            question is worth asking in, supported by open research into
+            information, inference and failure.
+          </p>
+        </div>
+
+        <nav class="site-foot__nav" aria-label="Footer">
+          <a class="nav-link" href="/#about">
+            About
+          </a>
+          <a class="nav-link" href="/udant">
+            Udant
+          </a>
+          <a class="nav-link" href="/k-research">
+            K Research
+          </a>
+          <a class="nav-link" href="/#entity">
+            Entity
+          </a>
+          <a class="nav-link" href="/#contact">
+            Contact
+          </a>
+        </nav>
+
+        <p class="legal">
+          © 2026 Kaaldarshi (OPC) Private Limited. Incorporation pending; CIN on
+          issue. [CONTACT EMAIL]
+        </p>
+      </div>
+    </footer>
+  ) : (
+    <footer class="site-foot site-foot--compact">
+      <div class="site-foot__inner site-foot__inner--compact wrap">
+        <a class="back" href="/">
+          <span aria-hidden="true">←</span> Kaaldarshi
+        </a>
+        <p class="legal legal--wide">
+          <slot />
+        </p>
+      </div>
+    </footer>
+  )
+}
+
+<style>
+  .site-foot {
+    padding-inline: var(--gutter);
+    border-top: 1px solid var(--hairline);
+  }
+
+  .site-foot__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px 64px;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-block: 48px;
+  }
+
+  .site-foot__inner--compact {
+    gap: 20px 48px;
+    align-items: center;
+    padding-block: 44px;
+  }
+
+  .colophon {
+    flex: 1 1 380px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .colophon__mark {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 14px;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .deva {
+    font-family: var(--font-deva);
+    font-size: 14px;
+    color: var(--ink-3);
+  }
+
+  .colophon__body {
+    max-width: 60ch;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink-3);
+  }
+
+  .site-foot__nav {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .legal {
+    flex: 0 1 260px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--ink-label);
+  }
+
+  .legal--wide {
+    flex: 1 1 420px;
+    max-width: 62ch;
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+
+  .back {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink-2);
+    transition: color var(--quick) ease-out;
+  }
+
+  .back:hover {
+    color: var(--ink);
+  }
+</style>

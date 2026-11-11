@@ -1,0 +1,367 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import ScrollRail from '../components/ScrollRail.astro';
+
+const nav = [
+  { href: '#areas', label: 'Areas' },
+  { href: '#index', label: 'Index' },
+  { href: '/udant', label: 'Udant' },
+];
+
+const rail = [
+  { id: 'top', label: 'K Research' },
+  { id: 'statement', label: 'Statement' },
+  { id: 'areas', label: 'Areas' },
+  { id: 'index', label: 'Index' },
+];
+
+const areas = [
+  {
+    name: 'Information theory',
+    note: 'Usable formulations — measures that survive contact with real, dirty, partially observed systems.',
+  },
+  {
+    name: 'Learning architectures',
+    note: 'Architectures for learning and routing in hybrid models.',
+  },
+  {
+    name: 'Cognitive and metacognitive systems',
+    note: 'Systems that model their own state, and know when they are out of their depth.',
+  },
+  {
+    name: 'Multi-agent behaviour',
+    note: 'What happens when many of them interact, and what that makes predictable.',
+  },
+  {
+    name: 'Applied mathematics and physics',
+    note: 'The parts of the toolkit the rest of the work keeps reaching for.',
+  },
+];
+
+/* Real work only. The index is never padded. */
+const papers = [
+  {
+    title:
+      'When Routing Doesn’t Move the Loss: Genre-Associated Routing Specialisation in a 125M-Parameter Hybrid Language Model',
+    ref: 'openreview.net/forum?id=uZuaQlxfwG',
+    venue: 'TMLR',
+    date: 'Sep 2026',
+    href: 'https://openreview.net/forum?id=uZuaQlxfwG',
+  },
+  {
+    title:
+      'Usable Information Theory: A Framework for Meaning, Utility, and Intelligence in Bounded Agents',
+    ref: 'doi 10.5281/zenodo.21063048',
+    venue: 'Preprint · Zenodo',
+    date: 'Jun 2026',
+    href: 'https://zenodo.org/records/21063048',
+  },
+  {
+    title:
+      'Aham: A Metacognitive Architecture for Latent-Steered Theory-of-Mind in Large Language Models',
+    ref: 'doi 10.5281/zenodo.18154827',
+    venue: 'Preprint · Zenodo',
+    date: 'Jan 2026',
+    href: 'https://zenodo.org/records/18154827',
+  },
+];
+---
+
+<Base
+  ground="paper"
+  title="K Research — the research arm of Kaaldarshi"
+  description="K Research is where the theory behind Kaaldarshi's systems gets worked out. We publish openly where we can: information theory, learning architectures, cognitive systems and applied mathematics."
+>
+  <SiteHeader slot="header" links={nav} lockup="K Research" />
+
+  <ScrollRail items={rail} />
+
+  <section id="top" class="hero">
+    <div class="hero__field" aria-hidden="true"></div>
+    <div class="hero__inner wrap">
+      <p class="kicker">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="label">Kaaldarshi · arm 02 · open by default</span>
+      </p>
+
+      <h1 class="t-display-2 hero__title">The research arm of Kaaldarshi.</h1>
+
+      <p class="t-prose--lede hero__lede">
+        K Research is where the theory behind our systems gets worked out. We
+        publish openly where we can: information theory, learning architectures,
+        cognitive systems and applied mathematics.
+      </p>
+    </div>
+  </section>
+
+  <section id="statement" class="section">
+    <div class="wrap ruled railed reveal">
+      <p class="rail label label--sm">02 / Statement</p>
+
+      <div class="railed-body">
+        <p class="t-prose">
+          The systems we build rest on open questions, and we would rather work
+          on those in public than pretend they are solved. Current work spans
+          usable formulations of information theory, architectures for learning
+          and routing in hybrid models, metacognitive and cognitive systems,
+          multi-agent behaviour, and applied mathematics.
+        </p>
+        <p class="t-prose statement__p">
+          Output is published openly wherever the work allows it. Not everything
+          will be, but the default is open.
+        </p>
+
+        <div class="inset policy">
+          <span class="label label--sm label--signal">Publication policy</span>
+          <p class="policy__text">
+            Open is the default. Where a result is withheld, it is withheld
+            deliberately, and the fact that something is withheld is itself
+            stated.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="areas" class="section">
+    <div class="wrap ruled reveal">
+      <div class="heads">
+        <p class="rail label label--sm">03 / Areas</p>
+        <h2 class="t-h2">The open problems the systems rest on.</h2>
+      </div>
+
+      <ul class="rows areas">
+        {
+          areas.map((area, i) => (
+            <li class="area">
+              <span class="mono area__num">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span class="area__name">{area.name}</span>
+              <span class="area__note">{area.note}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section id="index" class="section">
+    <div class="wrap ruled reveal">
+      <div class="heads heads--tight">
+        <p class="rail label label--sm">04 / Index</p>
+        <h2 class="t-h2">Published work.</h2>
+      </div>
+
+      <div class="index">
+        <div class="index__head" aria-hidden="true">
+          <span class="label label--sm index__no">No.</span>
+          <span class="label label--sm index__title">Title</span>
+          <span class="label label--sm index__venue">Venue</span>
+          <span class="label label--sm index__date">Date</span>
+        </div>
+
+        {
+          papers.map((paper, i) => (
+            <a class="paper" href={paper.href}>
+              <span class="mono index__no paper__num">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span class="index__title paper__main">
+                <span class="paper__title">{paper.title}</span>
+                <span class="mono paper__ref">{paper.ref}</span>
+              </span>
+              <span class="mono index__venue paper__venue">{paper.venue}</span>
+              <span class="mono index__date paper__date">{paper.date}</span>
+            </a>
+          ))
+        }
+      </div>
+
+      <p class="t-small index__note">
+        Preprints are posted to Zenodo with a DOI. The index is not padded: it
+        holds what is actually out.
+      </p>
+
+      <p class="btn-row">
+        <a class="btn btn--primary" href="/#contact">Get in touch</a>
+        <a class="btn" href="/udant">
+          See Udant <span aria-hidden="true">→</span>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <SiteFooter slot="footer" variant="compact">
+    K Research is the research arm of Kaaldarshi (<span class="deva" lang="hi"
+      >कालदर्शी</span
+    >, “one who sees time”), an information company. Kaaldarshi (OPC) Private
+    Limited · incorporation pending.
+  </SiteFooter>
+</Base>
+
+<style>
+  .hero__title {
+    max-width: 20ch;
+  }
+
+  .hero__lede {
+    margin-block-start: 36px;
+  }
+
+  .statement__p {
+    margin-block-start: 26px;
+  }
+
+  .policy {
+    margin-block-start: 44px;
+    max-width: 54ch;
+    background: var(--surface);
+  }
+
+  .policy__text {
+    margin-block-start: 10px;
+    font-size: 15px;
+    line-height: 1.66;
+    color: var(--ink-2);
+  }
+
+  .heads--tight {
+    margin-block-end: 36px;
+  }
+
+  /* --- areas -------------------------------------------------------------- */
+
+  .area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 32px;
+    align-items: baseline;
+    padding-block: 26px;
+  }
+
+  .area__num {
+    flex: 0 0 44px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--ink-label);
+  }
+
+  .area__name {
+    flex: 0 0 320px;
+    max-width: 100%;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+
+  .area__note {
+    flex: 999 1 280px;
+    min-width: 0;
+    max-width: 56ch;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  /* --- publication index -------------------------------------------------- */
+
+  .index {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+  }
+
+  .index__head,
+  .paper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+    align-items: baseline;
+    padding: 24px;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .index__head {
+    padding-block: 14px;
+  }
+
+  .paper {
+    text-decoration: none;
+    color: var(--ink);
+    transition: background var(--quick) ease-out;
+  }
+
+  .paper:last-child {
+    border-bottom: 0;
+  }
+
+  .paper:hover {
+    background: var(--ground);
+  }
+
+  .index__no {
+    flex: 0 0 32px;
+  }
+
+  .index__title {
+    flex: 999 1 280px;
+    min-width: 0;
+  }
+
+  .index__venue {
+    flex: 0 0 150px;
+  }
+
+  .index__date {
+    flex: 0 0 110px;
+  }
+
+  .paper__num {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--ink-label);
+  }
+
+  .paper__main {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .paper__title {
+    font-family: var(--font-prose);
+    font-size: 18px;
+    line-height: 1.38;
+    color: var(--ink);
+  }
+
+  .paper:hover .paper__title {
+    color: var(--signal);
+  }
+
+  .paper__ref {
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--ink-label);
+  }
+
+  .paper__venue,
+  .paper__date {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--ink-2);
+  }
+
+  .paper__venue {
+    text-transform: uppercase;
+  }
+
+  .index__note {
+    margin-block-start: 20px;
+    max-width: 62ch;
+  }
+</style>

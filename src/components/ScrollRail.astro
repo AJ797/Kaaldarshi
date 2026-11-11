@@ -1,0 +1,26 @@
+---
+interface RailItem {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  items: RailItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav class="scroll-rail" data-scroll-rail aria-label="Sections">
+  {
+    items.map((item, i) => (
+      <a href={`#${item.id}`}>
+        <span class="scroll-rail__num" aria-hidden="true">
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <span class="vh">{item.label}</span>
+        <span class="scroll-rail__tick" aria-hidden="true" />
+      </a>
+    ))
+  }
+</nav>

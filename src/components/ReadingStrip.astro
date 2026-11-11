@@ -1,0 +1,34 @@
+---
+/* No inline style attributes anywhere in this site: style-src is 'self' with
+   no unsafe-inline, which also blocks style="". The fill and baseline are
+   design-time constants, so they resolve to utility classes in global.css.
+   Allowed fill steps: 26 28 33 38 41 49 52 58 64 66 72. Bases: 44 46. */
+
+interface Props {
+  label: string;
+  /** Geometry only — percentage width of the filled portion. No value implied. */
+  fill: number;
+  /** Position of the reading's own baseline tick. */
+  base?: 44 | 46;
+  note?: string | false;
+}
+
+const {
+  label,
+  fill,
+  base = 46,
+  note = 'Illustrative surface — no live data',
+} = Astro.props;
+---
+
+<div class="strip">
+  <div class="strip__head">
+    <span class="label label--sm">{label}</span>
+    <span class="strip__val" aria-hidden="true">——</span>
+  </div>
+  <div class="strip__track">
+    <span class:list={['strip__fill', `fill-${fill}`]}></span>
+    <span class:list={['strip__base', `base-${base}`]}></span>
+  </div>
+  {note && <span class="strip__note">{note}</span>}
+</div>

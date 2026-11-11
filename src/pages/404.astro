@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+const nav = [
+  { href: '/#about', label: 'About' },
+  { href: '/udant', label: 'Udant' },
+  { href: '/k-research', label: 'K Research' },
+];
+---
+
+<Base
+  title="Not found — Kaaldarshi"
+  description="That page does not exist."
+>
+  <SiteHeader slot="header" links={nav} />
+
+  <section class="hero">
+    <div class="hero__field" aria-hidden="true"></div>
+    <div class="hero__inner wrap">
+      <p class="kicker">
+        <span class="label">Error 404</span>
+      </p>
+
+      <h1 class="t-display-2 narrow">Nothing here.</h1>
+
+      <p class="t-lede spaced">
+        No page at this address. The two arms are below, and everything else
+        starts from the front.
+      </p>
+
+      <p class="btn-row">
+        <a class="btn btn--primary" href="/">Kaaldarshi</a>
+        <a class="btn" href="/udant">Udant</a>
+        <a class="btn" href="/k-research">K Research</a>
+      </p>
+    </div>
+  </section>
+
+  <SiteFooter slot="footer" />
+</Base>
+
+<style>
+  .narrow {
+    max-width: 14ch;
+  }
+
+  .spaced {
+    margin-block-start: 32px;
+    max-width: 48ch;
+  }
+</style>

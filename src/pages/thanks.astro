@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+const nav = [
+  { href: '/#about', label: 'About' },
+  { href: '/udant', label: 'Udant' },
+  { href: '/k-research', label: 'K Research' },
+];
+---
+
+<Base
+  title="Request received — Kaaldarshi"
+  description="Your Udant access request has been received."
+>
+  <SiteHeader slot="header" links={nav} />
+
+  <section class="hero">
+    <div class="hero__field" aria-hidden="true"></div>
+    <div class="hero__inner wrap">
+      <p class="kicker">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="label">Udant · access request</span>
+      </p>
+
+      <h1 class="t-display-2 narrow">Received.</h1>
+
+      <p class="t-lede spaced">
+        We read every one. If it is a fit, you will hear from a person, not an
+        autoresponder.
+      </p>
+
+      <p class="btn-row">
+        <a class="btn" href="/">
+          <span aria-hidden="true">←</span> Back to Kaaldarshi
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <SiteFooter slot="footer" />
+</Base>
+
+<style>
+  .narrow {
+    max-width: 14ch;
+  }
+
+  .spaced {
+    margin-block-start: 32px;
+    max-width: 48ch;
+  }
+</style>

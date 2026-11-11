@@ -8,10 +8,13 @@ job is to say that — systems that **infer rather than report** — and to pres
 the two arms as current instances of that question, not as the boundary of the
 company.
 
-| Arm            | What it is                                             | Route          |
-| -------------- | ------------------------------------------------------ | -------------- |
-| **Udant**      | Institutional intelligence tooling, built for analysts | `/udant`       |
-| **K Research** | The research arm of Kaaldarshi                         | `/k-research`  |
+| Route          | What it is                                   |
+| -------------- | -------------------------------------------- |
+| `/`            | Kaaldarshi: the thesis, the arms, the entity |
+| `/udant`       | Arm 01 — institutional intelligence tooling  |
+| `/k-research`  | Arm 02 — the research arm, on a paper ground |
+| `/thanks`      | Access-request confirmation                  |
+| `/404`         | Not found                                    |
 
 ## Positioning rules that are load-bearing
 
@@ -28,29 +31,63 @@ Two things on the home page are easy to break during a redesign:
 
 ## Design
 
-Visual direction, page comps, the design system and the 390px layout live on the
-project's Design canvas. Direction in one line: **instrument, not dashboard** —
-ink ground, hairline structure, a single signal colour reserved for state, and
-no decorative "intelligence platform" imagery.
+Direction in one line: **instrument, not dashboard** — ink ground, hairline
+structure, a single signal colour reserved for state, and no decorative
+"intelligence platform" imagery. Full comps and the design system live on the
+project's Design canvas.
 
-K Research inverts to a paper ground: it is a journal, not a product page.
+- **Ground is fixed by brand, not by `prefers-color-scheme`.** Ink everywhere,
+  except K Research, which inverts to paper because it is a journal. Pages opt
+  in with `ground="paper"`, which re-points the same token names.
+- **Signal `#CC4A2B` means state** — live, open, crossed, falsified, active.
+  Never decoration, never a second brand colour. At 4.3:1 it is for marks and
+  rules only; small signal text steps up to `#E57350` (6.5:1).
+- **Steel `#7E9AAE` is data geometry only** and carries no brand meaning.
+
+### There is no scroll-snap
+
+It was built, measured and removed. Every section here is taller than the
+viewport, and `scroll-snap-align: start` on a section taller than the scrollport
+pins the page at the section start — a measured `scrollBy(0, 1500)` moved
+**0px**. The rule was that the wheel always wins, so snap lost. Scroll
+pagination is carried by the fixed rail (`ScrollRail.astro`) plus smooth anchor
+scrolling. Do not reintroduce snap without re-measuring.
 
 ## Stack
 
-- **Astro**, static output, zero client JS by default
-- Self-hosted `woff2` subsets — **no font CDN**, so no third-party request and
-  no CSP origin to allowlist. Devanagari is load-bearing (कालदर्शी, प्रत्यक्ष,
-  अनुमान), so Noto Sans Devanagari subsets ship too.
+- **Astro**, static output, zero client JS except one small bundled module
 - **Netlify** hosting; build config and headers in `netlify.toml`
-- No analytics, no embedded widgets, no trackers
+- No analytics, no embedded widgets, no trackers, no third-party requests
+
+### Fonts
+
+Self-hosted `woff2` in `public/fonts/`, sourced from the `@fontsource` packages
+in `dependencies`. No font CDN, so there is no third-party request and no CSP
+origin to allowlist.
+
+Devanagari is load-bearing (कालदर्शी, प्रत्यक्ष, अनुमान). The full Noto Sans
+Devanagari face is 121 KB for about sixteen glyphs, so it ships subset to 17 KB:
+
+```bash
+bash tools/subset-devanagari.sh
+```
+
+**If you add new Devanagari copy, add its characters to
+`tools/devanagari-glyphs.txt` and re-run that script** — otherwise the new text
+falls back to a system font. Requires `pip install fonttools brotli`.
 
 ## Local development
 
 ```bash
 npm install
-npm run dev     # http://localhost:4321
-npm run build   # -> dist/
-npm run preview
+```
+
+```bash
+npm run dev
+```
+
+```bash
+npm run build
 ```
 
 ## Security baseline
@@ -58,8 +95,7 @@ npm run preview
 Enforced in `netlify.toml`:
 
 - `Content-Security-Policy` with `default-src 'none'` and **no** `unsafe-inline`
-  on `script-src` or `style-src`. If a build step emits an inline `<style>`,
-  add its `sha256` hash — do not relax the directive.
+  on `script-src` or `style-src`.
 - `frame-ancestors 'none'` plus legacy `X-Frame-Options: DENY`
 - HSTS with `includeSubDomains; preload`
 - `Referrer-Policy: strict-origin-when-cross-origin`
@@ -67,37 +103,78 @@ Enforced in `netlify.toml`:
 - `Cross-Origin-Opener-Policy` / `Cross-Origin-Resource-Policy: same-origin`
 - `X-Content-Type-Options: nosniff`
 
+The build is written to satisfy that CSP rather than the other way round:
+
+- `build.inlineStylesheets: 'never'` and `vite.build.assetsInlineLimit: 0`, so
+  no `<style>` block and no `data:` URI is ever emitted.
+- **No `style=""` attributes anywhere.** `style-src 'self'` blocks inline style
+  attributes too, so design-time geometry (reading-strip fills, baseline ticks)
+  resolves to utility classes in `global.css`. Add a step there before using it.
+- `public/js/boot.js` is external and parser-blocking. Its only job is to add a
+  `js` class before first paint, so progressive-enhancement states can hide
+  themselves without an inline-script hash and without ever hiding content from
+  a no-JS visitor.
+
+Verify after a build — both counts must be zero:
+
+```bash
+grep -o 'style="[^"]*"' dist/*.html | wc -l
+```
+
+```bash
+grep -h -c '<style' dist/*.html
+```
+
 Other rules:
 
 - No secrets in the repository. `.env*` is gitignored except `.env.example`.
-- The Udant access form posts to a single serverless function with a honeypot
-  field and rate limiting. It stores an email and a free-text note, nothing else.
-- Dependencies stay minimal and pinned; run `npm audit` before each deploy.
+- The Udant access form uses **Netlify Forms** with a honeypot field
+  (`netlify-honeypot="bot-field"`) and posts to `/thanks` on the same origin, so
+  `form-action 'self'` holds. No custom function, no third-party endpoint. It
+  collects an email and an optional free-text note, nothing else. Netlify Forms
+  must be enabled on the site for submissions to be captured.
+- No domain is hardcoded. `astro.config.mjs` reads `SITE_URL`, then Netlify's
+  build-time `URL`, falling back to localhost — so canonical URLs, `og:url`,
+  `robots.txt` and `sitemap.xml` are correct without anyone guessing a domain.
+- Dependencies stay minimal and pinned; run `npm run audit` before each deploy.
+
+## Accessibility
+
+- Real `<button>`, `<a href>`, `<input>` + `<label>` throughout; no click
+  handlers on divs.
+- The capability tablist follows the ARIA tabs pattern with roving tabindex and
+  arrow/Home/End keys. **Without JavaScript every panel renders, stacked** —
+  nothing is hidden from a no-JS visitor.
+- Visible focus ring on everything, never removed. 48px minimum touch targets.
+- `prefers-reduced-motion: reduce` drops every transition to 0ms and turns off
+  smooth scrolling.
+- Hit and miss marks differ in lightness as well as hue, so they survive a
+  greyscale print and most colour-vision differences.
 
 ## Published work (K Research index)
 
 | # | Title | Venue | Date |
 | - | ----- | ----- | ---- |
-| 01 | *[TMLR PAPER TITLE — needed]* | TMLR | *[date needed]* |
+| 01 | When Routing Doesn't Move the Loss: Genre-Associated Routing Specialisation in a 125M-Parameter Hybrid Language Model | TMLR | Sep 2026 |
 | 02 | Usable Information Theory: A Framework for Meaning, Utility, and Intelligence in Bounded Agents | Preprint · Zenodo | Jun 2026 |
 | 03 | Aham: A Metacognitive Architecture for Latent-Steered Theory-of-Mind in Large Language Models | Preprint · Zenodo | Jan 2026 |
 
+- 01 — <https://openreview.net/forum?id=uZuaQlxfwG>
 - 02 — <https://zenodo.org/records/21063048> — doi 10.5281/zenodo.21063048
 - 03 — <https://zenodo.org/records/18154827> — doi 10.5281/zenodo.18154827
-- 01 — <https://openreview.net/forum?id=uZuaQlxfwG> — title not yet captured;
-  OpenReview serves a bot challenge to automated fetches, so fill this in by hand.
 
-No author byline is shown on the index yet; decide before launch.
+No author byline is shown on the index, by choice.
 
 ## Still needed before launch
 
-- TMLR paper title and publication date
-- Registered office address
-- Contact email
-- CIN (issued on incorporation)
+- Registered office address → `[REGISTERED OFFICE]` on `/`
+- Contact email → `[CONTACT EMAIL]` on `/` and in the footer
+- CIN, issued on incorporation → currently reads "On issue"
+- Enable Netlify Forms on the site, and point a domain at it
 
 ## Content
 
 All site copy is supplied by the company and used verbatim. No metrics,
 customer names or track-record figures appear anywhere until they are real —
-live readings render as em-dashes with an "illustrative" caption.
+live readings render as em-dashes with an "illustrative" caption, and the
+forecast card is a schema with bracketed fields, not an invented example.

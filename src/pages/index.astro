@@ -1,0 +1,586 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import ScrollRail from '../components/ScrollRail.astro';
+import ReadingStrip from '../components/ReadingStrip.astro';
+
+const nav = [
+  { href: '/#about', label: 'About' },
+  { href: '/udant', label: 'Udant' },
+  { href: '/k-research', label: 'K Research' },
+  { href: '/#entity', label: 'Entity' },
+];
+
+const rail = [
+  { id: 'top', label: 'Our business is information' },
+  { id: 'about', label: 'About' },
+  { id: 'arms', label: 'Arms' },
+  { id: 'standard', label: 'Standard' },
+  { id: 'entity', label: 'Entity' },
+];
+
+/* Deliberately flat: four items, identical treatment, no featured entry.
+   A reader should absorb "they do this everywhere", not "intelligence plus
+   some other stuff". Do not turn this into a hero item plus three others. */
+const domains = [
+  'A corridor under pressure',
+  'A codebase carrying a flaw nobody has found yet',
+  'A market quietly repricing risk',
+  'A terrain that has not been surveyed',
+];
+
+const udantPillars = [
+  'Interrogate the model, with the evidence chain attached',
+  'Standing monitors on entities, corridors, thresholds',
+  'Seed a scenario, trace the cascade across domains',
+  'Forecasts with falsification triggers, timestamped and scored',
+];
+
+const researchAreas = [
+  'Information theory',
+  'Learning architectures',
+  'Cognitive and metacognitive systems',
+  'Multi-agent behaviour',
+  'Applied mathematics and physics',
+];
+
+const entity = [
+  ['Legal name', 'Kaaldarshi (OPC) Private Limited', false],
+  ['Form', 'One Person Company', false],
+  ['Jurisdiction', 'India', false],
+  ['Status', 'Name reserved · incorporation pending', true],
+  ['CIN', 'On issue', false],
+  ['Registered office', '[REGISTERED OFFICE]', false],
+];
+---
+
+<Base
+  title="Kaaldarshi — our business is information"
+  description="Kaaldarshi (कालदर्शी, one who sees time) is an information company. We build systems that infer rather than report: what the present state of a structured system implies about its next."
+>
+  <SiteHeader
+    slot="header"
+    links={nav}
+    cta={{ href: '/#contact', label: 'Contact' }}
+  />
+
+  <ScrollRail items={rail} />
+
+  <section id="top" class="hero">
+    <div class="hero__field" aria-hidden="true"></div>
+    <div class="hero__inner wrap">
+      <p class="kicker">
+        <span class="kicker__deva" lang="hi">कालदर्शी</span>
+        <span class="kicker__rule" aria-hidden="true"></span>
+        <span class="label">One who sees time</span>
+      </p>
+
+      <h1 class="t-display hero__title">Our business is information.</h1>
+
+      <p class="t-lede hero__lede">
+        Not storing it, not retrieving it, not summarising it back to you in a
+        nicer shape.
+      </p>
+
+      <dl class="facts">
+        <div>
+          <dt class="label label--sm">Formed</dt>
+          <dd>2026</dd>
+        </div>
+        <div>
+          <dt class="label label--sm">Arms</dt>
+          <dd>02</dd>
+        </div>
+        <div>
+          <dt class="label label--sm">Published work</dt>
+          <dd>03</dd>
+        </div>
+        <div>
+          <dt class="label label--sm">Status</dt>
+          <dd class="is-signal">Incorporation pending</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <div class="wrap ruled railed reveal">
+      <p class="rail label label--sm">02 / About</p>
+
+      <div class="railed-body">
+        <p class="t-body--ink">
+          Kaaldarshi takes its name from <span class="deva" lang="hi"
+            >कालदर्शी</span
+          >: one who sees time.
+        </p>
+
+        <p class="t-body about__p">
+          The classical epistemologies draw a hard line between <em
+            >pratyaksha</em
+          >, what is directly perceived, and <em>anumaan</em>, what can be
+          validly inferred from it. Nearly every system ever built to handle
+          information stops at the first. It tells you what is there. We work on
+          the second.
+        </p>
+
+        <div class="terms">
+          <div class="term">
+            <span class="term__deva" lang="sa">प्रत्यक्ष</span>
+            <span class="label term__name">Pratyaksha</span>
+            <p class="term__gloss">What is directly perceived.</p>
+            <p class="term__foot">Where nearly every system stops</p>
+          </div>
+
+          <span class="terms__arrow" aria-hidden="true">→</span>
+
+          <div class="term term--signal">
+            <span class="term__deva" lang="sa">अनुमान</span>
+            <span class="label label--signal term__name">Anumaan</span>
+            <p class="term__gloss">What can be validly inferred from it.</p>
+            <p class="term__foot term__foot--signal">Where we work</p>
+          </div>
+        </div>
+
+        <p class="t-body about__p">
+          Inference travels better across domains than people expect.
+        </p>
+
+        <ul class="domains">
+          {
+            domains.map((domain, i) => (
+              <li>
+                <span class="mono domains__num">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span class="domains__text">{domain}</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <p class="t-body about__p">
+          Those are one question wearing different clothes: what does the
+          present state of this system tell you about its next one? The material
+          changes. The machinery underneath barely does.
+        </p>
+
+        <p class="t-body about__p--tight">
+          So we build wherever that question is worth asking, and we fund the
+          theory beneath it rather than treating research as decoration. What
+          makes information usable, how inference holds up under incomplete
+          evidence, how structured systems fail: these are open problems, and we
+          would rather work on them in the open.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="arms" class="section">
+    <div class="wrap ruled reveal">
+      <div class="heads">
+        <p class="rail label label--sm">03 / Arms</p>
+        <h2 class="t-h2">Where the question is being asked right now.</h2>
+      </div>
+
+      <div class="arms">
+        <article class="panel arm">
+          <div class="arm__head">
+            <span class="label label--sm">Arm 01</span>
+            <span class="label label--sm label--signal">Platform</span>
+          </div>
+
+          <h3 class="t-h3">Udant</h3>
+          <p class="arm__line">
+            Institutional intelligence tooling, built for analysts.
+          </p>
+          <p class="arm__body">
+            A live structured model of entities, corridors, institutions and
+            events — open to interrogation. You bring the questions. You decide
+            what matters.
+          </p>
+
+          <ul class="rows arm__rows">
+            {
+              udantPillars.map((pillar, i) => (
+                <li class="row-ab">
+                  <span class="mono">{String.fromCharCode(65 + i)}</span>
+                  <span>{pillar}</span>
+                </li>
+              ))
+            }
+          </ul>
+
+          <div class="arm__strip">
+            <ReadingStrip
+              label="Chokepoint reading vs. own baseline"
+              fill={58}
+              base={44}
+              note="Illustrative surface — no live data on this page"
+            />
+          </div>
+
+          <p class="arm__cta">
+            <a class="btn" href="/udant">
+              Open Udant <span aria-hidden="true">→</span>
+            </a>
+          </p>
+        </article>
+
+        <article class="panel arm arm--paper ground-paper">
+          <div class="arm__head">
+            <span class="label label--sm">Arm 02</span>
+            <span class="label label--sm">Research</span>
+          </div>
+
+          <h3 class="t-h3">K Research</h3>
+          <p class="arm__line">The research arm of Kaaldarshi.</p>
+          <p class="arm__body">
+            Where the theory behind our systems gets worked out. Published
+            openly wherever the work allows it. Not everything will be, but the
+            default is open.
+          </p>
+
+          <ul class="rows arm__rows">
+            {researchAreas.map((area) => <li class="arm__area">{area}</li>)}
+          </ul>
+
+          <div class="arm__foot">
+            <span class="label label--sm">03 papers out · TMLR and preprint</span>
+            <p class="arm__cta">
+              <a class="btn" href="/k-research">
+                Open K Research <span aria-hidden="true">→</span>
+              </a>
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="standard" class="section">
+    <div class="wrap ruled railed reveal">
+      <p class="rail label label--sm">04 / Standard</p>
+
+      <div class="railed-body">
+        <p class="t-statement standard__claim">
+          Everything we assert carries the conditions under which it would be
+          wrong.
+        </p>
+
+        <div class="standard__cols">
+          <p class="t-small">
+            Every forecast ships with an explicit falsification trigger: the
+            specific observable that would prove it wrong.
+          </p>
+          <p class="t-small">
+            Those calls are logged, timestamped and scored as reality resolves
+            them. Hits and misses both.
+          </p>
+          <p class="t-small">
+            The open problems underneath — usable information, inference under
+            incomplete evidence, how structured systems fail — are worked on in
+            the open.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="entity" class="section">
+    <div class="wrap ruled railed reveal">
+      <p class="rail label label--sm">05 / Entity</p>
+
+      <div class="railed-body">
+        <dl class="defs">
+          {
+            entity.map(([term, value, signal]) => (
+              <div>
+                <dt>{term}</dt>
+                <dd class:list={[signal && 'is-signal']}>{value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <div class="wrap panel contact reveal">
+      <div class="contact__body">
+        <h2 class="t-h4">
+          If the question is being asked in your domain, we want to hear it.
+        </h2>
+        <p class="contact__note">
+          For Udant access, <a class="link-ink" href="/udant">go here</a>. For
+          research, collaboration or anything else, write to us directly.
+        </p>
+      </div>
+
+      <div class="contact__direct">
+        <span class="label label--sm">Direct</span>
+        <span class="contact__email">[CONTACT EMAIL]</span>
+      </div>
+    </div>
+  </section>
+
+  <SiteFooter slot="footer" />
+</Base>
+
+<style>
+  .hero__title {
+    max-width: 15ch;
+  }
+
+  .hero__lede {
+    margin-block-start: 36px;
+  }
+
+  .about__p {
+    margin-block-start: 28px;
+  }
+
+  .about__p--tight {
+    margin-block-start: 22px;
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--ink-2);
+    max-width: 68ch;
+  }
+
+  /* --- the term pair ------------------------------------------------------ */
+
+  .terms {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 20px;
+    margin-block-start: 44px;
+  }
+
+  .term {
+    flex: 1 1 260px;
+    min-width: 0;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 24px;
+  }
+
+  .term--signal {
+    background: var(--surface-raised);
+    border-left: 1px solid var(--signal);
+  }
+
+  .term__deva {
+    display: block;
+    font-family: var(--font-deva);
+    font-size: 28px;
+    line-height: 1.25;
+    color: var(--ink-2);
+  }
+
+  .term--signal .term__deva {
+    color: var(--ink);
+  }
+
+  .term__name {
+    margin-block-start: 10px;
+  }
+
+  .term__gloss {
+    margin-block-start: 14px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  .term__foot {
+    margin-block-start: 18px;
+    padding-block-start: 14px;
+    border-top: 1px solid var(--hairline);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    color: var(--ink-label);
+  }
+
+  .term__foot--signal {
+    color: var(--signal-ink);
+  }
+
+  .terms__arrow {
+    flex: 0 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--tick);
+  }
+
+  /* --- the flat domain list ----------------------------------------------- */
+
+  .domains {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 24px;
+    margin-block-start: 28px;
+  }
+
+  .domains li {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid var(--hairline);
+    padding-block-start: 16px;
+  }
+
+  .domains__num {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--ink-label);
+  }
+
+  .domains__text {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  /* --- arms --------------------------------------------------------------- */
+
+  .arms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .arm {
+    flex: 1 1 460px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .arm--paper {
+    flex: 1 1 380px;
+    background: var(--ground);
+    border-color: var(--hairline);
+    color: var(--ink);
+  }
+
+  .arm__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-block-end: 44px;
+  }
+
+  .arm__line {
+    margin-block-start: 18px;
+    max-width: 34ch;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  .arm__body {
+    margin-block-start: 20px;
+    max-width: 48ch;
+    font-size: 15px;
+    line-height: 1.68;
+    color: var(--ink-2);
+  }
+
+  .arm__rows {
+    margin-block-start: 40px;
+  }
+
+  .arm__area {
+    padding-block: 13px;
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  .arm__strip {
+    margin-block-start: 36px;
+  }
+
+  .arm__cta {
+    margin-block-start: 40px;
+  }
+
+  .arm__foot {
+    margin-block-start: auto;
+    padding-block-start: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .arm__foot .arm__cta {
+    margin-block-start: 0;
+  }
+
+  /* --- standard ----------------------------------------------------------- */
+
+  .standard__claim {
+    max-width: 38ch;
+  }
+
+  .standard__cols {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    margin-block-start: 48px;
+  }
+
+  .standard__cols p {
+    flex: 1 1 240px;
+    line-height: 1.7;
+    color: var(--ink-2);
+  }
+
+  /* --- contact ------------------------------------------------------------ */
+
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    align-items: flex-end;
+    padding: clamp(32px, 4vw, 64px);
+  }
+
+  .contact__body {
+    flex: 999 1 420px;
+    min-width: 0;
+  }
+
+  .contact__body h2 {
+    max-width: 26ch;
+  }
+
+  .contact__note {
+    margin-block-start: 18px;
+    max-width: 52ch;
+    color: var(--ink-2);
+  }
+
+  .contact__direct {
+    flex: 1 1 300px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .contact__email {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    color: var(--ink);
+  }
+</style>

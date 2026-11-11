@@ -1,0 +1,834 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import ScrollRail from '../components/ScrollRail.astro';
+import ReadingStrip from '../components/ReadingStrip.astro';
+
+const nav = [
+  { href: '#thesis', label: 'Thesis' },
+  { href: '#capabilities', label: 'Capabilities' },
+  { href: '#receipts', label: 'Receipts' },
+];
+
+const rail = [
+  { id: 'top', label: 'Udant' },
+  { id: 'thesis', label: 'Thesis' },
+  { id: 'capabilities', label: 'Capabilities' },
+  { id: 'receipts', label: 'Receipts' },
+  { id: 'surfaces', label: 'Live surfaces' },
+];
+
+const pillars = [
+  {
+    tag: 'Query',
+    title: 'Interrogate the model',
+    kicker: 'Any entity, corridor, market or region',
+    body: 'Ask about any entity, corridor, market or region. Get structured analysis with the evidence chain attached, not a summary of yesterday’s headlines.',
+    mech: [
+      'Query any node in the standing model, not a search index',
+      'Structured answer, with the reasoning path exposed',
+      'Every claim resolves back to its sources',
+    ],
+    meter: 'Evidence depth on last answer',
+    fill: 64,
+  },
+  {
+    tag: 'Monitor',
+    title: 'Watch what matters to you',
+    kicker: 'Standing monitors and thresholds',
+    body: 'Set standing monitors on the entities, corridors and thresholds you care about. Udant tracks them continuously and tells you when something crosses.',
+    mech: [
+      'Define the threshold once, in your own terms',
+      'Continuous evaluation against the live model',
+      'Notified on a crossing, not on the news cycle',
+    ],
+    meter: 'Monitors against threshold',
+    fill: 38,
+  },
+  {
+    tag: 'Simulate',
+    title: 'Simulate the break',
+    kicker: 'Cascades across domains',
+    body: 'Seed a scenario and trace the cascade across domains. See which second and third-order effects land where, and which of your exposures are actually upstream of each other.',
+    mech: [
+      'Seed the shock at any point in the model',
+      'Propagate across energy, regulation, capital, security',
+      'Surface the shared upstream you did not know you had',
+    ],
+    meter: 'Cascade depth reached',
+    fill: 72,
+  },
+  {
+    tag: 'Surfaces',
+    title: 'Read the live surfaces',
+    kicker: 'Chokepoint and stress readings',
+    body: 'Chokepoint and stress readings tracked against their own baselines, updated as the world moves.',
+    mech: [
+      'A reading, not a headline',
+      'Compared against its own history, not a global scale',
+      'Updated as the world moves',
+    ],
+    meter: 'Reading vs. own baseline',
+    fill: 52,
+  },
+  {
+    tag: 'Scoring',
+    title: 'Keep the receipts',
+    kicker: 'Falsification triggers, scored',
+    body: 'Timestamped forecasts with falsification triggers, scored. The track record is the product’s argument for itself.',
+    mech: [
+      'Every call ships with the observable that would kill it',
+      'Timestamped at issue, revisions kept on the record',
+      'Scored as reality resolves it — hits and misses both',
+    ],
+    meter: 'Resolved calls scored',
+    fill: 26,
+  },
+];
+
+/* Surface names are illustrative. No values appear anywhere, because none of
+   these are live yet and a website is not the place to invent a number. */
+const surfaces = [
+  { name: 'Maritime chokepoint', kind: 'Transit load vs. baseline', fill: 58 },
+  { name: 'Pipeline corridor', kind: 'Throughput vs. baseline', fill: 41 },
+  { name: 'Sovereign funding', kind: 'Spread vs. baseline', fill: 66 },
+  { name: 'Regulatory tempo', kind: 'Filing rate vs. baseline', fill: 33 },
+  { name: 'Critical mineral flow', kind: 'Export volume vs. baseline', fill: 49 },
+  { name: 'Force posture', kind: 'Deployment index vs. baseline', fill: 28 },
+];
+
+const record = [
+  ['Logged', '——'],
+  ['Resolved', '——'],
+  ['Hit rate', '——'],
+  ['Brier score', '——'],
+];
+
+const states = [
+  ['hit', 'Hit'],
+  ['miss', 'Trigger fired — miss'],
+  ['open', 'Open'],
+  ['withdrawn', 'Withdrawn'],
+];
+---
+
+<Base
+  title="Udant — institutional intelligence tooling, built for analysts"
+  description="Udant is an intelligence platform for people who analyse the world for a living. It maintains a live structured model of global entities, corridors, institutions and events, and gives you direct access to it."
+>
+  <SiteHeader
+    slot="header"
+    links={nav}
+    cta={{ href: '#access', label: 'Request access' }}
+    lockup="Udant"
+  />
+
+  <ScrollRail items={rail} />
+
+  <section id="top" class="hero">
+    <div class="hero__field hero__field--right" aria-hidden="true"></div>
+    <div class="hero__inner wrap">
+      <p class="kicker">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="label">Kaaldarshi · arm 01 · closed access</span>
+      </p>
+
+      <h1 class="t-display-2 hero__title">
+        Institutional intelligence tooling, built for analysts.
+      </h1>
+
+      <p class="t-lede hero__lede">
+        Udant is an intelligence platform for people who analyse the world for a
+        living. It maintains a live structured model of global entities,
+        corridors, institutions and events, and gives you direct access to it.
+        You ask your own questions. You decide what matters.
+      </p>
+
+      <p class="btn-row">
+        <a class="btn btn--primary" href="#capabilities">What it does</a>
+        <a class="btn" href="#receipts">See the scoring</a>
+      </p>
+    </div>
+  </section>
+
+  <section id="thesis" class="section">
+    <div class="wrap ruled railed reveal">
+      <p class="rail label label--sm">02 / Thesis</p>
+
+      <div class="railed-body">
+        <p class="t-body--ink">
+          Udant is an intelligence platform built for analysts, researchers,
+          journalists and the people who brief them.
+        </p>
+        <p class="t-body thesis__p">
+          Most tools in this space either hand you somebody else’s conclusions
+          or forget everything you told them last week. Udant does neither.
+          Underneath it sits a continuously updated structured model of the
+          world: entities, relationships, corridors, markets, institutions and
+          the events moving them. That model persists, accumulates, and stays
+          open to interrogation.
+        </p>
+        <p class="t-body thesis__p--tight">
+          You bring the questions. Udant supplies the structure, the evidence
+          trail and the machinery to reason across domains that normally sit in
+          separate silos. Energy, regulation, capital and security are modelled
+          as one connected system, because that is how they behave.
+        </p>
+        <p class="t-body thesis__p--tight">
+          Every forecast carries an explicit falsification trigger: the specific
+          observable that would prove it wrong. Those calls are logged,
+          timestamped and scored as reality resolves them. Hits and misses both.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities" class="section">
+    <div class="wrap ruled reveal">
+      <div class="heads">
+        <p class="rail label label--sm">03 / Capabilities</p>
+        <h2 class="t-h2">Five surfaces onto the same model.</h2>
+      </div>
+
+      <div class="caps" data-tabs>
+        <div
+          class="caps__list"
+          role="tablist"
+          aria-label="Capabilities"
+          aria-orientation="vertical"
+        >
+          {
+            pillars.map((pillar, i) => (
+              <button
+                type="button"
+                class="cap"
+                data-tab
+                role="tab"
+                id={`cap-tab-${i}`}
+                aria-controls={`cap-panel-${i}`}
+                aria-selected={i === 0 ? 'true' : 'false'}
+              >
+                <span class="mono cap__num">{String(i + 1).padStart(2, '0')}</span>
+                <span class="cap__text">
+                  <span class="cap__title">{pillar.title}</span>
+                  <span class="cap__kicker">{pillar.kicker}</span>
+                </span>
+              </button>
+            ))
+          }
+        </div>
+
+        <div class="caps__panels">
+          {
+            pillars.map((pillar, i) => (
+              <div
+                class="cap-panel"
+                data-panel
+                role="tabpanel"
+                id={`cap-panel-${i}`}
+                aria-labelledby={`cap-tab-${i}`}
+                tabindex="0"
+              >
+                <div class="cap-panel__head">
+                  <span class="label label--sm label--signal">
+                    {String(i + 1).padStart(2, '0')} · {pillar.tag}
+                  </span>
+                  <span class="label label--sm">05 total</span>
+                </div>
+
+                <h3 class="t-h3 cap-panel__title">{pillar.title}</h3>
+                <p class="cap-panel__body">{pillar.body}</p>
+
+                <ul class="rows cap-panel__rows">
+                  {pillar.mech.map((line) => (
+                    <li class="mech">
+                      <span class="mech__rule" aria-hidden="true" />
+                      <span>{line}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div class="cap-panel__strip">
+                  <ReadingStrip label={pillar.meter} fill={pillar.fill} />
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="receipts" class="section">
+    <div class="wrap ruled reveal">
+      <div class="heads">
+        <p class="rail label label--sm">04 / Receipts</p>
+        <h2 class="t-h2">
+          A forecast that cannot be proven wrong is not a forecast.
+        </h2>
+      </div>
+
+      <div class="receipts">
+        <article class="card">
+          <div class="card__head">
+            <span class="label label--sm">Forecast record</span>
+            <span class="label label--sm label--signal card__state">
+              <span class="dot" aria-hidden="true"></span>Open
+            </span>
+          </div>
+
+          <div class="card__body">
+            <p class="card__claim">
+              [The claim, stated so that it can be checked]
+            </p>
+
+            <dl class="card__meta">
+              <div>
+                <dt class="label label--sm">Issued</dt>
+                <dd class="mono">[TIMESTAMP]</dd>
+              </div>
+              <div>
+                <dt class="label label--sm">Horizon</dt>
+                <dd class="mono">[DATE]</dd>
+              </div>
+            </dl>
+
+            <div class="inset card__trigger">
+              <span class="label label--sm label--signal">
+                Falsification trigger
+              </span>
+              <p class="card__trigger-text">
+                [The specific observable that would prove this call wrong]
+              </p>
+            </div>
+
+            <p class="card__foot">
+              <span class="mono">Evidence chain · [N] sources</span>
+              <span class="mono">Revisions · [N]</span>
+            </p>
+          </div>
+        </article>
+
+        <div class="receipts__side">
+          <div class="card card--pad">
+            <span class="label label--sm">Track record</span>
+            <dl class="record">
+              {
+                record.map(([term, value]) => (
+                  <div>
+                    <dt>{term}</dt>
+                    <dd class="num">{value}</dd>
+                  </div>
+                ))
+              }
+            </dl>
+            <p class="record__note">
+              The board starts empty. It fills in public, misses included.
+            </p>
+          </div>
+
+          <div class="card card--pad">
+            <span class="label label--sm">Resolution states</span>
+            <ul class="marks states">
+              {
+                states.map(([kind, label]) => (
+                  <li>
+                    <span class:list={['mark', `mark--${kind}`]} aria-hidden="true" />
+                    <span>{label}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="surfaces" class="section">
+    <div class="wrap ruled reveal">
+      <div class="heads">
+        <p class="rail label label--sm">05 / Live surfaces</p>
+        <h2 class="t-h2">Readings, against their own baselines.</h2>
+      </div>
+
+      <div class="surfaces">
+        {
+          surfaces.map((surface) => (
+            <div class="surface">
+              <ReadingStrip
+                label={surface.name}
+                fill={surface.fill}
+                note={surface.kind}
+              />
+            </div>
+          ))
+        }
+      </div>
+
+      <p class="t-small surfaces__note">
+        Surface names are illustrative. No values are shown because none of
+        these are live yet, and a website is not the place to invent a number.
+      </p>
+    </div>
+  </section>
+
+  <section id="access" class="section">
+    <div class="wrap panel access reveal">
+      <div class="access__body">
+        <h2 class="t-h4">
+          Closed access while the model is being built out.
+        </h2>
+        <p class="access__note">
+          Tell us what you analyse and who you brief. We read every one.
+        </p>
+      </div>
+
+      <form
+        class="access__form"
+        name="udant-access"
+        method="POST"
+        action="/thanks"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+      >
+        <p class="hp">
+          <label for="bot-field">Leave this field empty</label>
+          <input id="bot-field" name="bot-field" type="text" tabindex="-1" />
+        </p>
+
+        <div class="field">
+          <label class="label label--sm" for="email">Work email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            placeholder="name@institution.org"
+          />
+        </div>
+
+        <div class="field">
+          <label class="label label--sm" for="brief">
+            What you analyse <span class="field__opt">(optional)</span>
+          </label>
+          <textarea id="brief" name="brief" rows="3"></textarea>
+        </div>
+
+        <button class="btn btn--primary access__submit" type="submit">
+          Request access
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <SiteFooter slot="footer" variant="compact">
+    Udant is an arm of Kaaldarshi, an information company. Kaaldarshi (OPC)
+    Private Limited · incorporation pending.
+  </SiteFooter>
+</Base>
+
+<style>
+  .hero__title {
+    max-width: 19ch;
+  }
+
+  .hero__lede {
+    margin-block-start: 36px;
+    max-width: 62ch;
+  }
+
+  .thesis__p {
+    margin-block-start: 28px;
+  }
+
+  .thesis__p--tight {
+    margin-block-start: 22px;
+  }
+
+  /* --- capabilities tablist ----------------------------------------------- */
+
+  .caps {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .caps__list {
+    flex: 1 1 320px;
+    min-width: 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .cap {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    width: 100%;
+    min-height: 48px;
+    padding: 22px 20px;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--hairline);
+    border-left: 1px solid var(--hairline);
+    cursor: pointer;
+    transition: background var(--quick) ease-out,
+      border-color var(--quick) ease-out;
+  }
+
+  .cap:hover {
+    background: var(--surface);
+  }
+
+  .cap[aria-selected='true'] {
+    background: var(--surface);
+    border-left-color: var(--signal);
+  }
+
+  .cap__num {
+    flex: none;
+    width: 28px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--ink-label);
+  }
+
+  .cap[aria-selected='true'] .cap__num {
+    color: var(--signal-ink);
+  }
+
+  .cap__text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .cap__title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    color: var(--ink-2);
+  }
+
+  .cap[aria-selected='true'] .cap__title {
+    color: var(--ink);
+  }
+
+  .cap__kicker {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .caps__panels {
+    flex: 1 1 420px;
+    min-width: 0;
+  }
+
+  /* Without JavaScript every panel shows, stacked. Nothing is hidden. */
+  .cap-panel {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: clamp(28px, 3.2vw, 44px);
+  }
+
+  .cap-panel + .cap-panel {
+    border-top: 0;
+  }
+
+  .cap-panel:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .cap-panel__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-block-end: 36px;
+  }
+
+  .cap-panel__title {
+    font-size: clamp(24px, 2.4vw, 32px);
+    line-height: 1.08;
+  }
+
+  .cap-panel__body {
+    margin-block-start: 20px;
+    max-width: 52ch;
+    font-size: 16px;
+    line-height: 1.72;
+    color: var(--ink-2);
+  }
+
+  .cap-panel__rows {
+    margin-block-start: 36px;
+  }
+
+  .cap-panel__strip {
+    margin-block-start: 36px;
+  }
+
+  .mech {
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+    padding-block: 13px;
+  }
+
+  .mech__rule {
+    flex: none;
+    width: 10px;
+    height: 1px;
+    background: var(--tick);
+    transform: translateY(-4px);
+  }
+
+  .mech span:last-child {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  /* --- receipts ----------------------------------------------------------- */
+
+  .receipts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .card {
+    flex: 1 1 440px;
+    min-width: 0;
+    background: var(--surface);
+    border: 1px solid var(--hairline-bright);
+  }
+
+  .card--pad {
+    flex: 1 1 auto;
+    padding: 28px 24px;
+    border-color: var(--hairline);
+  }
+
+  .card__head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .card__state {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card__body {
+    padding: 28px 24px;
+  }
+
+  .card__claim {
+    max-width: 46ch;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+
+  .card__meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 32px;
+    margin-block-start: 28px;
+  }
+
+  .card__meta > div {
+    border-top: 1px solid var(--hairline);
+    padding-block: 14px;
+  }
+
+  .card__meta dd {
+    margin-block-start: 7px;
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+
+  .card__trigger {
+    margin-block-start: 20px;
+  }
+
+  .card__trigger-text {
+    margin-block-start: 10px;
+    max-width: 48ch;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  .card__foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    margin-block-start: 20px;
+    padding-block-start: 14px;
+    border-top: 1px solid var(--hairline);
+    font-size: 11px;
+    color: var(--ink-label);
+  }
+
+  .receipts__side {
+    flex: 1 1 320px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .record {
+    margin-block-start: 24px;
+  }
+
+  .record > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    border-top: 1px solid var(--hairline);
+    padding-block: 14px;
+  }
+
+  .record > div:last-child {
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .record dt {
+    font-size: 14px;
+    color: var(--ink-2);
+  }
+
+  .record dd {
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  .record__note {
+    margin-block-start: 22px;
+    max-width: 34ch;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-3);
+  }
+
+  .states {
+    margin-block-start: 20px;
+  }
+
+  /* Hit and miss differ in lightness as well as hue, so they survive a
+     greyscale print and most colour-vision differences. */
+  .mark {
+    display: block;
+  }
+
+  .mark--hit {
+    background: var(--steel);
+  }
+
+  .mark--miss {
+    background: var(--signal);
+  }
+
+  .mark--open {
+    background: var(--tick);
+  }
+
+  .mark--withdrawn {
+    background: var(--hairline-bright);
+  }
+
+  /* --- surfaces ----------------------------------------------------------- */
+
+  .surfaces {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+  }
+
+  .surface {
+    border-top: 1px solid var(--hairline);
+    padding-block-start: 18px;
+  }
+
+  .surfaces__note {
+    margin-block-start: 32px;
+    max-width: 56ch;
+  }
+
+  /* --- access ------------------------------------------------------------- */
+
+  .access {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    align-items: flex-start;
+    padding: clamp(32px, 4vw, 64px);
+  }
+
+  .access__body {
+    flex: 999 1 420px;
+    min-width: 0;
+  }
+
+  .access__body h2 {
+    max-width: 26ch;
+  }
+
+  .access__note {
+    margin-block-start: 18px;
+    max-width: 52ch;
+    color: var(--ink-2);
+  }
+
+  .access__form {
+    flex: 1 1 320px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .access__form textarea {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--ground);
+    border: 1px solid var(--hairline-bright);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    resize: vertical;
+  }
+
+  .access__form textarea:focus-visible {
+    border-color: var(--ink-3);
+  }
+
+  .field__opt {
+    letter-spacing: 0.1em;
+    color: var(--ink-label);
+    text-transform: none;
+  }
+
+  .access__submit {
+    align-self: flex-start;
+  }
+</style>
