@@ -1,0 +1,66 @@
+# Kaaldarshi (OPC) Private Limited — public site
+# Static build, no server runtime. Headers below are the security baseline;
+# keep them in sync with public/_headers if that file is ever added.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+  NPM_FLAGS = "--no-audit --no-fund"
+
+# ---------------------------------------------------------------------------
+# Security headers — applied to every response
+# ---------------------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # No inline or third-party script. Fonts are self-hosted, so no CDN origin
+    # is allowlisted anywhere. If a build step ever emits an inline <style>,
+    # add its sha256 hash here rather than relaxing to 'unsafe-inline'.
+    Content-Security-Policy = """
+      default-src 'none';
+      base-uri 'none';
+      script-src 'self';
+      style-src 'self';
+      img-src 'self' data:;
+      font-src 'self';
+      connect-src 'self';
+      manifest-src 'self';
+      form-action 'self';
+      frame-ancestors 'none';
+      upgrade-insecure-requests
+    """
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Resource-Policy = "same-origin"
+    Permissions-Policy = """
+      accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(),
+      camera=(), display-capture=(), document-domain=(), encrypted-media=(),
+      fullscreen=(self), geolocation=(), gyroscope=(), idle-detection=(),
+      magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(),
+      publickey-credentials-get=(), screen-wake-lock=(), serial=(),
+      usb=(), xr-spatial-tracking=()
+    """
+    X-Robots-Tag = "index, follow"
+
+# Fingerprinted build assets — safe to cache forever
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# HTML must always be revalidated
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
