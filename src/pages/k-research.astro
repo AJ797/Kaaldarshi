@@ -4,7 +4,6 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import ScrollRail from '../components/ScrollRail.astro';
 import SectionRail from '../components/SectionRail.astro';
-import MarkBezel from '../components/MarkBezel.astro';
 
 const nav = [
   { href: '#areas', label: 'Areas' },
@@ -82,9 +81,6 @@ const papers = [
 
   <section id="top" class="hero">
     <div class="hero__field" aria-hidden="true"></div>
-    <div class="hero__mark" aria-hidden="true">
-      <MarkBezel />
-    </div>
     <div class="hero__inner wrap">
       <p class="kicker">
         <span class="dot" aria-hidden="true"></span>
@@ -200,10 +196,7 @@ const papers = [
   </section>
 
   <SiteFooter slot="footer" variant="compact">
-    K Research is the research arm of Kaaldarshi (<span class="deva" lang="hi"
-      >कालदर्शी</span
-    >, “one who sees time”), an information company. Kaaldarshi (OPC) Private
-    Limited · incorporation pending.
+    K Research is the research arm of Kaaldarshi, an information company.
   </SiteFooter>
 </Base>
 

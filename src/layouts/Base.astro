@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import MarkBezel from '../components/MarkBezel.astro';
 
 interface Props {
   title: string;
@@ -59,6 +60,9 @@ const htmlClass = ground === 'paper' ? 'ground-paper' : undefined;
   <body>
     <div class="grain" aria-hidden="true"></div>
     <div class="vignette" aria-hidden="true"></div>
+    <div class="page-mark" aria-hidden="true">
+      <MarkBezel />
+    </div>
     <div class="progress" aria-hidden="true"></div>
 
     <a class="skip" href="#main">Skip to content</a>

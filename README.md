@@ -10,7 +10,7 @@ company.
 
 | Route          | What it is                                   |
 | -------------- | -------------------------------------------- |
-| `/`            | Kaaldarshi: the thesis, the arms, the entity |
+| `/`            | Kaaldarshi: about, the arms, the approach    |
 | `/udant`       | Arm 01 — institutional intelligence tooling  |
 | `/k-research`  | Arm 02 — the research arm, on a paper ground |
 | `/thanks`      | Access-request confirmation                  |
@@ -58,6 +58,10 @@ belongs to `MarkBezel.astro`, which turns a ring of measuring ticks around the
 static mark, driven by scroll position rather than a timer — so the movement
 reports where you are on the page instead of just being busy.
 
+The mark is rendered once in `Base.astro` as a **fixed** element (`.page-mark`),
+not inside the hero. It stays with the viewport for the whole scroll, so the
+bezel keeps turning and the lower half of a long page is never left bare.
+
 ### Material and motion
 
 - **Film grain and a vignette** sit over the ground (`public/noise.png`, 13KB,
@@ -97,16 +101,20 @@ Self-hosted `woff2` in `public/fonts/`, sourced from the `@fontsource` packages
 in `dependencies`. No font CDN, so there is no third-party request and no CSP
 origin to allowlist.
 
-Devanagari is load-bearing (कालदर्शी, प्रत्यक्ष, अनुमान). The full Noto Sans
-Devanagari face is 121 KB for about sixteen glyphs, so it ships subset to 17 KB:
+Sanskrit terms are transliterated in **IAST**, not Devanagari — this is an
+international site, and Devanagari narrowed the audience it read for. IAST
+diacritics (Kāladarśī, pratyakṣa, anumāna) live in Latin Extended-A and Latin
+Extended Additional, which the base latin cuts do not cover. The full
+latin-ext cuts would add ~192 KB, so each face ships subset to just those
+glyphs, 23 KB in total:
 
 ```bash
-bash tools/subset-devanagari.sh
+bash tools/subset-iast.sh
 ```
 
-**If you add new Devanagari copy, add its characters to
-`tools/devanagari-glyphs.txt` and re-run that script** — otherwise the new text
-falls back to a system font. Requires `pip install fonttools brotli`.
+**If you add IAST characters not already in `tools/iast-glyphs.txt`, add them
+there and re-run that script** — otherwise they fall back to a system font.
+Requires `pip install fonttools brotli`.
 
 ## Local development
 
@@ -210,10 +218,14 @@ Both live in `src/lib/site.ts` so a change lands everywhere at once:
 - `intelligence@kaaldarshi.systems` — Udant access requests
 - `ariet@kaaldarshi.systems` — general contact
 
+## Corporate detail
+
+Company status, CIN and registered-office lines were deliberately pulled from
+the site. The only corporate line that remains is the home-page footer:
+`© Kaaldarshi Pvt Ltd · Est. 2026`. Do not scatter it back through the pages.
+
 ## Still needed before launch
 
-- Registered office address → `[REGISTERED OFFICE]` on `/`
-- CIN, issued on incorporation → currently reads "On issue"
 - Enable Netlify Forms on the site, and point a domain at it
 
 ## Content

@@ -4,24 +4,26 @@
    The track holds two identical runs and travels -50%, so the loop is
    seamless; the duplicate is hidden from assistive tech. */
 
+interface TickerItem {
+  text: string;
+  /** Transliterated Sanskrit, set in italic with its own lang. */
+  translit?: boolean;
+}
+
 interface Props {
-  items?: string[];
+  items?: TickerItem[];
 }
 
 const {
   items = [
-    'कालदर्शी',
-    'One who sees time',
-    'An information company',
-    'Inference, not reporting',
-    'Arm 01 · Udant',
-    'Arm 02 · K Research',
-    'Incorporation pending',
-    'Est. 2026',
+    { text: 'Kāladarśī', translit: true },
+    { text: 'An information company' },
+    { text: 'Information you can act on' },
+    { text: 'Arm 01 · Udant' },
+    { text: 'Arm 02 · K Research' },
+    { text: 'Research, intelligence, software' },
   ],
 } = Astro.props;
-
-const isDeva = (s: string) => /[ऀ-ॿ]/.test(s);
 ---
 
 <div class="ticker">
@@ -30,12 +32,12 @@ const isDeva = (s: string) => /[ऀ-ॿ]/.test(s);
       {
         items.map((item) => (
           <span class="ticker__item">
-            {isDeva(item) ? (
-              <span class="deva" lang="hi">
-                {item}
+            {item.translit ? (
+              <span class="translit" lang="sa-Latn">
+                {item.text}
               </span>
             ) : (
-              item
+              item.text
             )}
           </span>
         ))
@@ -45,7 +47,11 @@ const isDeva = (s: string) => /[ऀ-ॿ]/.test(s);
       {
         items.map((item) => (
           <span class="ticker__item">
-            {isDeva(item) ? <span class="deva">{item}</span> : item}
+            {item.translit ? (
+              <span class="translit">{item.text}</span>
+            ) : (
+              item.text
+            )}
           </span>
         ))
       }

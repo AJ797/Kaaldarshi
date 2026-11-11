@@ -70,17 +70,56 @@
     U+FFFD;
 }
 
-/* Subset to the glyphs the site uses. Adding new Devanagari copy means adding
-   its characters to tools/devanagari-glyphs.txt and re-running
-   tools/subset-devanagari.sh, or the new text falls back to a system font. */
+/* IAST diacritics (Kāladarśī, pratyakṣa, anumāna) live in Latin Extended-A
+   and Latin Extended Additional, which the base latin cuts above do not
+   cover. These are the same typefaces, subset to just those glyphs by
+   tools/subset-iast.sh — 23KB in total rather than 192KB for the full
+   latin-ext cuts. Add new IAST characters to tools/iast-glyphs.txt and
+   re-run that script, or they will fall back to a system font. */
+
 @font-face {
-  font-family: 'Noto Sans Devanagari';
+  font-family: 'Archivo';
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url('/fonts/noto-sans-devanagari-subset-wght-normal.woff2')
-    format('woff2-variations');
-  unicode-range: U+0900-097F, U+200C-200D, U+25CC;
+  src: url('/fonts/archivo-iast-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0100-024F, U+1E00-1EFF;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/inter-iast-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0100-024F, U+1E00-1EFF;
+}
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url('/fonts/source-serif-4-iast-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0100-024F, U+1E00-1EFF;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-iast-400-normal.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-iast-500-normal.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF;
 }
 
 /* --- tokens ---------------------------------------------------------------- */
@@ -123,7 +162,6 @@
   --font-body: 'Inter', 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', monospace;
   --font-prose: 'Source Serif 4', Georgia, 'Times New Roman', serif;
-  --font-deva: 'Noto Sans Devanagari', 'Nirmala UI', serif;
 
   --wrap: 1240px;
   --gutter: clamp(20px, 5vw, 64px);
@@ -271,9 +309,34 @@ button {
 }
 
 /* Everything real sits above the material. */
-body > *:not(.grain):not(.vignette) {
+body > *:not(.grain):not(.vignette):not(.page-mark) {
   position: relative;
   z-index: 1;
+}
+
+/* The mark stays with the viewport instead of scrolling away with the hero,
+   so its bezel keeps turning the whole way down and the lower half of the
+   page is not left bare. Confidence is in the crop. */
+.page-mark {
+  position: fixed;
+  top: 50%;
+  right: clamp(-260px, -14vw, -80px);
+  width: clamp(360px, 46vw, 720px);
+  translate: 0 -50%;
+  color: var(--watermark);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@media (max-width: 860px) {
+  .page-mark {
+    top: auto;
+    bottom: -20vw;
+    right: -40vw;
+    width: 96vw;
+    translate: none;
+    opacity: 0.75;
+  }
 }
 
 /* Reads as the page's own position, not a loading bar: 1px, signal, top edge. */
@@ -417,9 +480,10 @@ body > *:not(.grain):not(.vignette) {
   font-variant-numeric: tabular-nums;
 }
 
-.deva {
-  font-family: var(--font-deva);
-  font-weight: 400;
+/* Transliterated Sanskrit. Set in the same families as everything else —
+   the diacritics come from the IAST subsets above. */
+.translit {
+  font-style: italic;
 }
 
 em {
@@ -596,29 +660,6 @@ em {
   mask-image: radial-gradient(110% 80% at 14% 24%, #000 0%, transparent 70%);
 }
 
-/* The mark, large and cropped by the viewport edge. Confidence is in the
-   crop: a logo floated politely in the middle reads as a placeholder. */
-.hero__mark {
-  position: absolute;
-  top: 50%;
-  right: clamp(-260px, -14vw, -80px);
-  width: clamp(360px, 46vw, 720px);
-  translate: 0 -50%;
-  color: var(--watermark);
-  pointer-events: none;
-  z-index: 0;
-}
-
-@media (max-width: 860px) {
-  .hero__mark {
-    top: auto;
-    bottom: -14vw;
-    right: -34vw;
-    width: 86vw;
-    translate: none;
-  }
-}
-
 .hero__inner {
   position: relative;
 }
@@ -631,10 +672,11 @@ em {
   margin-block-end: 34px;
 }
 
-.kicker__deva {
-  font-family: var(--font-deva);
-  font-size: clamp(20px, 2vw, 26px);
-  line-height: 1.3;
+.kicker__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(16px, 1.5vw, 19px);
+  letter-spacing: 0.04em;
   color: var(--ink);
 }
 
@@ -761,10 +803,8 @@ em {
   flex: none;
 }
 
-.ticker__item .deva {
-  font-size: 13px;
-  letter-spacing: 0;
-  text-transform: none;
+.ticker__item .translit {
+  letter-spacing: 0.18em;
   color: var(--ink-3);
 }
 

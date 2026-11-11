@@ -5,21 +5,18 @@ import SiteFooter from '../components/SiteFooter.astro';
 import ScrollRail from '../components/ScrollRail.astro';
 import SectionRail from '../components/SectionRail.astro';
 import ReadingStrip from '../components/ReadingStrip.astro';
-import MarkBezel from '../components/MarkBezel.astro';
 import { UDANT_EMAIL } from '../lib/site';
 
 const nav = [
   { href: '#thesis', label: 'Thesis' },
   { href: '#capabilities', label: 'Capabilities' },
-  { href: '#receipts', label: 'Receipts' },
 ];
 
 const rail = [
   { id: 'top', label: 'Udant' },
   { id: 'thesis', label: 'Thesis' },
   { id: 'capabilities', label: 'Capabilities' },
-  { id: 'receipts', label: 'Receipts' },
-  { id: 'surfaces', label: 'Live surfaces' },
+  { id: 'access', label: 'Access' },
 ];
 
 const pillars = [
@@ -79,7 +76,7 @@ const pillars = [
     tag: 'Scoring',
     title: 'Keep the receipts',
     kicker: 'Falsification triggers, scored',
-    body: 'Timestamped forecasts with falsification triggers, scored. The track record is the product’s argument for itself.',
+    body: 'Timestamped forecasts with falsification triggers, scored as reality resolves them.',
     mech: [
       'Every call ships with the observable that would kill it',
       'Timestamped at issue, revisions kept on the record',
@@ -92,28 +89,8 @@ const pillars = [
 
 /* Surface names are illustrative. No values appear anywhere, because none of
    these are live yet and a website is not the place to invent a number. */
-const surfaces = [
-  { name: 'Maritime chokepoint', kind: 'Transit load vs. baseline', fill: 58 },
-  { name: 'Pipeline corridor', kind: 'Throughput vs. baseline', fill: 41 },
-  { name: 'Sovereign funding', kind: 'Spread vs. baseline', fill: 66 },
-  { name: 'Regulatory tempo', kind: 'Filing rate vs. baseline', fill: 33 },
-  { name: 'Critical mineral flow', kind: 'Export volume vs. baseline', fill: 49 },
-  { name: 'Force posture', kind: 'Deployment index vs. baseline', fill: 28 },
-];
 
-const record = [
-  ['Logged', '——'],
-  ['Resolved', '——'],
-  ['Hit rate', '——'],
-  ['Brier score', '——'],
-];
 
-const states = [
-  ['hit', 'Hit'],
-  ['miss', 'Trigger fired — miss'],
-  ['open', 'Open'],
-  ['withdrawn', 'Withdrawn'],
-];
 ---
 
 <Base
@@ -131,9 +108,6 @@ const states = [
 
   <section id="top" class="hero">
     <div class="hero__field" aria-hidden="true"></div>
-    <div class="hero__mark" aria-hidden="true">
-      <MarkBezel />
-    </div>
 
     <div class="hero__inner wrap">
       <p class="kicker">
@@ -154,7 +128,7 @@ const states = [
 
       <p class="btn-row">
         <a class="btn btn--primary" href="#capabilities">What it does</a>
-        <a class="btn" href="#receipts">See the scoring</a>
+        <a class="btn" href="#access">Request access</a>
       </p>
     </div>
   </section>
@@ -267,120 +241,6 @@ const states = [
     </div>
   </section>
 
-  <section id="receipts" class="section">
-    <div class="wrap ruled reveal">
-      <div class="heads">
-        <span class="label">04 — Receipts</span>
-        <h2 class="t-h2">
-          A forecast that cannot be proven wrong is not a forecast.
-        </h2>
-      </div>
-
-      <div class="receipts">
-        <article class="card">
-          <div class="card__head">
-            <span class="label label--sm">Forecast record</span>
-            <span class="label label--sm label--signal card__state">
-              <span class="dot dot--live" aria-hidden="true"></span>Open
-            </span>
-          </div>
-
-          <div class="card__body">
-            <p class="card__claim">
-              [The claim, stated so that it can be checked]
-            </p>
-
-            <dl class="card__meta">
-              <div>
-                <dt class="label label--sm">Issued</dt>
-                <dd class="mono">[TIMESTAMP]</dd>
-              </div>
-              <div>
-                <dt class="label label--sm">Horizon</dt>
-                <dd class="mono">[DATE]</dd>
-              </div>
-            </dl>
-
-            <div class="inset card__trigger">
-              <span class="label label--sm label--signal">
-                Falsification trigger
-              </span>
-              <p class="card__trigger-text">
-                [The specific observable that would prove this call wrong]
-              </p>
-            </div>
-
-            <p class="card__foot">
-              <span class="mono">Evidence chain · [N] sources</span>
-              <span class="mono">Revisions · [N]</span>
-            </p>
-          </div>
-        </article>
-
-        <div class="receipts__side">
-          <div class="card card--pad">
-            <span class="label label--sm">Track record</span>
-            <dl class="record">
-              {
-                record.map(([term, value]) => (
-                  <div>
-                    <dt>{term}</dt>
-                    <dd class="num">{value}</dd>
-                  </div>
-                ))
-              }
-            </dl>
-            <p class="record__note">
-              The board starts empty. It fills in public, misses included.
-            </p>
-          </div>
-
-          <div class="card card--pad">
-            <span class="label label--sm">Resolution states</span>
-            <ul class="marks states">
-              {
-                states.map(([kind, label]) => (
-                  <li>
-                    <span class:list={['mark', `mark--${kind}`]} aria-hidden="true" />
-                    <span>{label}</span>
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="surfaces" class="section">
-    <div class="wrap ruled reveal">
-      <div class="heads">
-        <span class="label">05 — Live surfaces</span>
-        <h2 class="t-h2">Readings, against their own baselines.</h2>
-      </div>
-
-      <div class="surfaces stagger">
-        {
-          surfaces.map((surface) => (
-            <div class="surface">
-              <ReadingStrip
-                label={surface.name}
-                fill={surface.fill}
-                note={surface.kind}
-              />
-            </div>
-          ))
-        }
-      </div>
-
-      <p class="t-small surfaces__note">
-        Surface names are illustrative. No values are shown because none of
-        these are live yet, and a website is not the place to invent a number.
-      </p>
-    </div>
-  </section>
-
   <section id="access" class="section">
     <div class="wrap panel access reveal">
       <div class="access__body">
@@ -438,8 +298,7 @@ const states = [
   </section>
 
   <SiteFooter slot="footer" variant="compact">
-    Udant is an arm of Kaaldarshi, an information company. Kaaldarshi (OPC)
-    Private Limited · incorporation pending.
+    Udant is an arm of Kaaldarshi, an information company.
   </SiteFooter>
 </Base>
 
@@ -605,185 +464,6 @@ const states = [
     font-size: 14px;
     line-height: 1.55;
     color: var(--ink-2);
-  }
-
-  /* --- receipts ----------------------------------------------------------- */
-
-  .receipts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-  }
-
-  .card {
-    flex: 1 1 440px;
-    min-width: 0;
-    background: var(--surface);
-    border: 1px solid var(--hairline-bright);
-  }
-
-  .card--pad {
-    flex: 1 1 auto;
-    padding: 28px 24px;
-    border-color: var(--hairline);
-  }
-
-  .card__head {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 24px;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 24px;
-    border-bottom: 1px solid var(--hairline);
-  }
-
-  .card__state {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .card__body {
-    padding: 28px 24px;
-  }
-
-  .card__claim {
-    max-width: 46ch;
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 1.3;
-    letter-spacing: -0.015em;
-    color: var(--ink);
-  }
-
-  .card__meta {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0 32px;
-    margin-block-start: 28px;
-  }
-
-  .card__meta > div {
-    border-top: 1px solid var(--hairline);
-    padding-block: 14px;
-  }
-
-  .card__meta dd {
-    margin-block-start: 7px;
-    font-size: 13px;
-    color: var(--ink-2);
-  }
-
-  .card__trigger {
-    margin-block-start: 20px;
-  }
-
-  .card__trigger-text {
-    margin-block-start: 10px;
-    max-width: 48ch;
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--ink);
-  }
-
-  .card__foot {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 28px;
-    margin-block-start: 20px;
-    padding-block-start: 14px;
-    border-top: 1px solid var(--hairline);
-    font-size: 11px;
-    color: var(--ink-label);
-  }
-
-  .receipts__side {
-    flex: 1 1 320px;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .record {
-    margin-block-start: 24px;
-  }
-
-  .record > div {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 16px;
-    border-top: 1px solid var(--hairline);
-    padding-block: 14px;
-  }
-
-  .record > div:last-child {
-    border-bottom: 1px solid var(--hairline);
-  }
-
-  .record dt {
-    font-size: 14px;
-    color: var(--ink-2);
-  }
-
-  .record dd {
-    font-size: 15px;
-    color: var(--ink);
-  }
-
-  .record__note {
-    margin-block-start: 22px;
-    max-width: 34ch;
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--ink-3);
-  }
-
-  .states {
-    margin-block-start: 20px;
-  }
-
-  /* Hit and miss differ in lightness as well as hue, so they survive a
-     greyscale print and most colour-vision differences. */
-  .mark {
-    display: block;
-  }
-
-  .mark--hit {
-    background: var(--steel);
-  }
-
-  .mark--miss {
-    background: var(--signal);
-  }
-
-  .mark--open {
-    background: var(--tick);
-  }
-
-  .mark--withdrawn {
-    background: var(--hairline-bright);
-  }
-
-  /* --- surfaces ----------------------------------------------------------- */
-
-  .surfaces {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 24px;
-  }
-
-  .surface {
-    border-top: 1px solid var(--hairline);
-    padding-block-start: 18px;
-  }
-
-  .surfaces__note {
-    margin-block-start: 32px;
-    max-width: 56ch;
   }
 
   /* --- access ------------------------------------------------------------- */

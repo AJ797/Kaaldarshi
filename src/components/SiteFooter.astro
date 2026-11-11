@@ -17,16 +17,15 @@ const { variant = 'full' } = Astro.props;
           <p class="colophon__mark">
             <Mark class="colophon__glyph" />
             <span class="wordmark">Kaaldarshi</span>
-            <span class="deva" lang="hi">
-              कालदर्शी
+            <span class="translit" lang="sa-Latn">
+              Kāladarśī
             </span>
           </p>
           <p class="colophon__body">
-            Kaaldarshi is an information company. We build systems that infer
-            rather than report: what the present state of a structured system
-            implies about its next. Our work spans whichever domains that
-            question is worth asking in, supported by open research into
-            information, inference and failure.
+            Kaaldarshi is a problem-solving company. We build systems that work
+            out what follows from what is already known, across whichever
+            domains that question is worth asking in, supported by open
+            research into information, inference and failure.
           </p>
         </div>
 
@@ -40,8 +39,8 @@ const { variant = 'full' } = Astro.props;
           <a class="nav-link" href="/k-research">
             K Research
           </a>
-          <a class="nav-link" href="/#entity">
-            Entity
+          <a class="nav-link" href="/#contact">
+            Contact
           </a>
         </nav>
 
@@ -49,10 +48,7 @@ const { variant = 'full' } = Astro.props;
           <a class="foot-mail" href={`mailto:${CONTACT_EMAIL}`}>
             {CONTACT_EMAIL}
           </a>
-          <p class="legal">
-            © 2026 Kaaldarshi (OPC) Private Limited. Incorporation pending; CIN
-            on issue.
-          </p>
+          <p class="legal">© Kaaldarshi Pvt Ltd · Est. 2026</p>
         </div>
       </div>
     </footer>
@@ -124,8 +120,7 @@ const { variant = 'full' } = Astro.props;
     color: var(--ink);
   }
 
-  .deva {
-    font-family: var(--font-deva);
+  .colophon__mark .translit {
     font-size: 14px;
     color: var(--ink-3);
   }
@@ -174,7 +169,6 @@ const { variant = 'full' } = Astro.props;
     color: var(--ink-2);
     text-decoration: none;
     border-bottom: 1px solid var(--hairline-bright);
-    padding-block-end: 2px;
     transition: color var(--quick) ease-out,
       border-color var(--quick) ease-out;
   }

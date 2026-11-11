@@ -5,7 +5,6 @@ import SiteFooter from '../components/SiteFooter.astro';
 import ScrollRail from '../components/ScrollRail.astro';
 import SectionRail from '../components/SectionRail.astro';
 import ReadingStrip from '../components/ReadingStrip.astro';
-import MarkBezel from '../components/MarkBezel.astro';
 import Ticker from '../components/Ticker.astro';
 import { CONTACT_EMAIL } from '../lib/site';
 
@@ -13,15 +12,13 @@ const nav = [
   { href: '/#about', label: 'About' },
   { href: '/udant', label: 'Udant' },
   { href: '/k-research', label: 'K Research' },
-  { href: '/#entity', label: 'Entity' },
 ];
 
 const rail = [
   { id: 'top', label: 'Our business is information' },
   { id: 'about', label: 'About' },
   { id: 'arms', label: 'Arms' },
-  { id: 'standard', label: 'Standard' },
-  { id: 'entity', label: 'Entity' },
+  { id: 'approach', label: 'Approach' },
 ];
 
 /* Deliberately flat: four items, identical treatment, no featured entry.
@@ -38,7 +35,7 @@ const udantPillars = [
   'Interrogate the model, with the evidence chain attached',
   'Standing monitors on entities, corridors, thresholds',
   'Seed a scenario, trace the cascade across domains',
-  'Forecasts with falsification triggers, timestamped and scored',
+  'Structured analysis, with the reasoning path exposed',
 ];
 
 const researchAreas = [
@@ -49,25 +46,16 @@ const researchAreas = [
   'Applied mathematics and physics',
 ];
 
-const entity: [string, string, boolean][] = [
-  ['Legal name', 'Kaaldarshi (OPC) Private Limited', false],
-  ['Form', 'One Person Company', false],
-  ['Jurisdiction', 'India', false],
-  ['Status', 'Name reserved · incorporation pending', true],
-  ['CIN', 'On issue', false],
-  ['Registered office', '[REGISTERED OFFICE]', false],
-];
-
-const standard = [
-  'Every forecast ships with an explicit falsification trigger: the specific observable that would prove it wrong.',
-  'Those calls are logged, timestamped and scored as reality resolves them. Hits and misses both.',
-  'The open problems underneath — usable information, inference under incomplete evidence, how structured systems fail — are worked on in the open.',
+const approach = [
+  'Answers carry their evidence and their limits. You should be able to check the work, and to see where it stops.',
+  'We build for the person who has to act on the result, not file it.',
+  'The theory underneath is open by default. Where something is withheld, we say that it is withheld.',
 ];
 ---
 
 <Base
   title="Kaaldarshi — our business is information"
-  description="Kaaldarshi (कालदर्शी, one who sees time) is an information company. We build systems that infer rather than report: what the present state of a structured system implies about its next."
+  description="Kaaldarshi is a problem-solving company. We build systems that work out what follows from what is already known: intelligence tooling, open research, and the software underneath both."
 >
   <SiteHeader
     slot="header"
@@ -79,29 +67,22 @@ const standard = [
 
   <section id="top" class="hero">
     <div class="hero__field" aria-hidden="true"></div>
-    <div class="hero__mark" aria-hidden="true">
-      <MarkBezel />
-    </div>
 
     <div class="hero__inner wrap">
       <p class="kicker">
-        <span class="kicker__deva" lang="hi">कालदर्शी</span>
+        <span class="kicker__name">Kāladarśī</span>
         <span class="kicker__rule" aria-hidden="true"></span>
-        <span class="label">One who sees time</span>
+        <span class="label">An information company</span>
       </p>
 
       <h1 class="t-display hero__title">Our business is information.</h1>
 
       <p class="t-lede hero__lede">
-        Not storing it, not retrieving it, not summarising it back to you in a
-        nicer shape.
+        Information you can act on. We build systems that work out what a
+        problem is telling you — and what to do about it.
       </p>
 
       <dl class="facts stagger">
-        <div>
-          <dt class="label">Formed</dt>
-          <dd>2026</dd>
-        </div>
         <div>
           <dt class="label">Arms</dt>
           <dd>02</dd>
@@ -111,8 +92,8 @@ const standard = [
           <dd>03</dd>
         </div>
         <div>
-          <dt class="label">Status</dt>
-          <dd class="is-signal">Incorporation pending</dd>
+          <dt class="label">Building in</dt>
+          <dd class="facts__wide">Research · Intelligence · Software</dd>
         </div>
       </dl>
     </div>
@@ -126,26 +107,25 @@ const standard = [
 
       <div class="railed-body">
         <p class="t-body--ink">
-          Kaaldarshi takes its name from <span class="deva" lang="hi"
-            >कालदर्शी</span
-          >: one who sees time.
+          Kaaldarshi is a problem-solving company. Information is the material
+          we work in.
         </p>
 
         <p class="t-body about__p">
-          The classical epistemologies draw a hard line between <em
-            >pratyaksha</em
-          >, what is directly perceived, and <em>anumaan</em>, what can be
-          validly inferred from it. Nearly every system ever built to handle
-          information stops at the first. It tells you what is there. We work on
-          the second.
+          Most systems stop at reporting. They tell you what is there —
+          accurately, in order, on time — and hand the hard part back to you.
+          The hard part is what follows from it: what this state of affairs
+          implies, what it rules out, and what is worth doing next.
         </p>
 
         <div class="terms">
           <div class="term">
-            <span class="term__deva" lang="sa">प्रत्यक्ष</span>
-            <span class="label term__name">Pratyaksha</span>
-            <p class="term__gloss">What is directly perceived.</p>
-            <p class="term__foot">Where nearly every system stops</p>
+            <span class="term__name">Reported</span>
+            <span class="label term__gloss-label">
+              <span class="translit" lang="sa-Latn">pratyakṣa</span>
+            </span>
+            <p class="term__gloss">What a system can observe directly.</p>
+            <p class="term__foot">Where most tools stop</p>
           </div>
 
           <span class="terms__arrow" aria-hidden="true">
@@ -153,15 +133,17 @@ const standard = [
           </span>
 
           <div class="term term--signal">
-            <span class="term__deva" lang="sa">अनुमान</span>
-            <span class="label label--signal term__name">Anumaan</span>
-            <p class="term__gloss">What can be validly inferred from it.</p>
+            <span class="term__name">Inferred</span>
+            <span class="label label--signal term__gloss-label">
+              <span class="translit" lang="sa-Latn">anumāna</span>
+            </span>
+            <p class="term__gloss">What validly follows from it.</p>
             <p class="term__foot term__foot--signal">Where we work</p>
           </div>
         </div>
 
         <p class="t-body about__p">
-          Inference travels better across domains than people expect.
+          That second step is the same job in every domain we have looked at.
         </p>
 
         <ul class="domains stagger">
@@ -178,17 +160,17 @@ const standard = [
         </ul>
 
         <p class="t-body about__p">
-          Those are one question wearing different clothes: what does the
-          present state of this system tell you about its next one? The material
-          changes. The machinery underneath barely does.
+          One question wearing different clothes: what does the present state
+          of this system tell you about its next one? The material changes. The
+          machinery underneath barely does.
         </p>
 
         <p class="t-body about__p--tight">
-          So we build wherever that question is worth asking, and we fund the
-          theory beneath it rather than treating research as decoration. What
-          makes information usable, how inference holds up under incomplete
-          evidence, how structured systems fail: these are open problems, and we
-          would rather work on them in the open.
+          So we build wherever that question is worth asking. Udant is the
+          first of those — intelligence tooling for analysts. K Research is
+          where the theory underneath gets worked out, published openly
+          wherever the work allows it. Financial systems come next, then
+          broader software. The list is not meant to be finished.
         </p>
       </div>
     </div>
@@ -277,36 +259,16 @@ const standard = [
     </div>
   </section>
 
-  <section id="standard" class="section">
+  <section id="approach" class="section">
     <div class="wrap ruled reveal standard">
-      <span class="label standard__index">04 — Standard</span>
+      <span class="label standard__index">04 — Approach</span>
 
       <p class="t-statement standard__claim">
-        Everything we assert carries the conditions under which it would be
-        wrong.
+        We would rather solve the problem than describe it.
       </p>
 
       <div class="standard__cols stagger">
-        {standard.map((line) => <p class="t-small">{line}</p>)}
-      </div>
-    </div>
-  </section>
-
-  <section id="entity" class="section">
-    <div class="wrap ruled railed reveal">
-      <SectionRail index="05" label="Entity" />
-
-      <div class="railed-body">
-        <dl class="defs">
-          {
-            entity.map(([term, value, signal]) => (
-              <div>
-                <dt>{term}</dt>
-                <dd class:list={[signal && 'is-signal']}>{value}</dd>
-              </div>
-            ))
-          }
-        </dl>
+        {approach.map((line) => <p class="t-small">{line}</p>)}
       </div>
     </div>
   </section>
@@ -342,6 +304,11 @@ const standard = [
 
   .hero__lede {
     margin-block-start: 36px;
+    max-width: 50ch;
+  }
+
+  .facts__wide {
+    font-size: 14px;
   }
 
   .about__p {
@@ -356,7 +323,10 @@ const standard = [
     max-width: 68ch;
   }
 
-  /* --- the term pair ------------------------------------------------------ */
+  /* --- reported / inferred ------------------------------------------------
+     English carries the idea; the Sanskrit sits underneath as provenance,
+     not as the headline. Reversing those two makes the section read as being
+     about the name rather than about the work. */
 
   .terms {
     display: flex;
@@ -380,24 +350,26 @@ const standard = [
     border-left: 1px solid var(--signal);
   }
 
-  .term__deva {
+  .term__name {
     display: block;
-    font-family: var(--font-deva);
-    font-size: clamp(28px, 3vw, 38px);
-    line-height: 1.2;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(26px, 2.6vw, 34px);
+    line-height: 1.1;
+    letter-spacing: -0.028em;
     color: var(--ink-3);
   }
 
-  .term--signal .term__deva {
+  .term--signal .term__name {
     color: var(--ink);
   }
 
-  .term__name {
-    margin-block-start: 12px;
+  .term__gloss-label {
+    margin-block-start: 10px;
   }
 
   .term__gloss {
-    margin-block-start: 14px;
+    margin-block-start: 16px;
     font-size: 15px;
     line-height: 1.6;
     color: var(--ink);
@@ -559,7 +531,7 @@ const standard = [
     margin-block-start: 0;
   }
 
-  /* --- standard: no rail, the claim carries the section ------------------- */
+  /* --- approach: no rail, the claim carries the section ------------------- */
 
   .standard__index {
     margin-block-end: 40px;
