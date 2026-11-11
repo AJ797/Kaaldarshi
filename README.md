@@ -44,6 +44,38 @@ project's Design canvas.
   rules only; small signal text steps up to `#E57350` (6.5:1).
 - **Steel `#7E9AAE` is data geometry only** and carries no brand meaning.
 
+### The mark
+
+`src/components/Mark.astro` holds the Kaaldarshi mark as a single even-odd
+path, traced from the supplied raster with marching squares plus
+Douglas-Peucker simplification — 14 subpaths, 341 points, 3.4KB, crisp from
+20px to full bleed. It takes `currentColor`, so it recolours with the ground.
+`public/favicon.svg` and `public/og.svg` are generated from the same path.
+
+**The artwork is never animated internally.** Its ring, spokes and triangle
+share hole boundaries and cannot be separated without distorting it. Motion
+belongs to `MarkBezel.astro`, which turns a ring of measuring ticks around the
+static mark, driven by scroll position rather than a timer — so the movement
+reports where you are on the page instead of just being busy.
+
+### Material and motion
+
+- **Film grain and a vignette** sit over the ground (`public/noise.png`, 13KB,
+  tiled). On a dark site this is the difference between a flat page and a
+  surface with a material.
+- **Scale contrast carries the hierarchy**: display type runs to 124px against
+  10px mono labels, roughly a 12x ratio.
+- **Section indices run vertically** down the gutter with a hairline dropping
+  from them, and the Standard section drops the rail entirely. Without that
+  variation every section reads as the same slide.
+- **Motion is transform and opacity only**, nothing travels more than 18px,
+  and `prefers-reduced-motion: reduce` zeroes every duration and delay and
+  stops the ticker.
+- Scroll position publishes to a `--scroll` custom property **through the
+  CSSOM**, which CSP does not gate — unlike a `style` attribute, which
+  `style-src 'self'` would block.
+- The ticker carries only true statements. No invented telemetry, no counters.
+
 ### There is no scroll-snap
 
 It was built, measured and removed. Every section here is taller than the
@@ -94,8 +126,10 @@ npm run build
 
 Enforced in `netlify.toml`:
 
-- `Content-Security-Policy` with `default-src 'none'` and **no** `unsafe-inline`
-  on `script-src` or `style-src`.
+- `Content-Security-Policy` with `default-src 'none'`, **no** `unsafe-inline`
+  on `script-src` or `style-src`, and **no `data:` anywhere** — every
+  directive resolves to `'self'`. Keep it that way: if something needs a
+  `data:` URI, ship it as a file instead.
 - `frame-ancestors 'none'` plus legacy `X-Frame-Options: DENY`
 - HSTS with `includeSubDomains; preload`
 - `Referrer-Policy: strict-origin-when-cross-origin`
@@ -123,6 +157,10 @@ grep -o 'style="[^"]*"' dist/*.html | wc -l
 
 ```bash
 grep -h -c '<style' dist/*.html
+```
+
+```bash
+grep -o 'data:' dist/*.html dist/_astro/*.css | wc -l
 ```
 
 Other rules:
@@ -165,10 +203,16 @@ Other rules:
 
 No author byline is shown on the index, by choice.
 
+## Addresses
+
+Both live in `src/lib/site.ts` so a change lands everywhere at once:
+
+- `intelligence@kaaldarshi.systems` — Udant access requests
+- `ariet@kaaldarshi.systems` — general contact
+
 ## Still needed before launch
 
 - Registered office address → `[REGISTERED OFFICE]` on `/`
-- Contact email → `[CONTACT EMAIL]` on `/` and in the footer
 - CIN, issued on incorporation → currently reads "On issue"
 - Enable Netlify Forms on the site, and point a domain at it
 
