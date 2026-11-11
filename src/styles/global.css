@@ -131,9 +131,13 @@
   --section-gap: clamp(88px, 11vw, 168px);
   --ruled-gap: 56px;
 
+  /* Durations are tokens, not one-offs: 100 / 150 / 200 / 300ms.
+     Enter uses ease-out; nothing on this site animates out. */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --quick: 160ms;
-  --enter: 380ms;
+  --t-100: 100ms;
+  --quick: 150ms;
+  --t-200: 200ms;
+  --enter: 300ms;
 
   /* Driven from JS via CSSOM (not blocked by style-src). 0 → 1 down the page. */
   --scroll: 0;
@@ -453,7 +457,7 @@ em {
 
 .js .reveal.ruled::before {
   transform: scaleX(0);
-  transition: transform 720ms var(--ease);
+  transition: transform var(--enter) var(--ease);
 }
 
 .js .reveal.ruled.is-in::before {
@@ -501,7 +505,7 @@ em {
 
 .js .reveal .rail__line {
   transform: scaleY(0);
-  transition: transform 900ms var(--ease) 120ms;
+  transition: transform var(--enter) var(--ease) 100ms;
 }
 
 .js .reveal.is-in .rail__line {
@@ -644,7 +648,7 @@ em {
 .js .reveal .kicker__rule,
 .js .hero .kicker__rule {
   transform: scaleX(0);
-  transition: transform 620ms var(--ease) 260ms;
+  transition: transform var(--enter) var(--ease) 200ms;
 }
 
 .js .hero.is-in .kicker__rule,
@@ -660,7 +664,9 @@ em {
   flex: none;
 }
 
-/* One element on the page pulses, and only because it means "live". */
+/* Two infinite loops exist here and both carry meaning rather than
+   decoration: this dot, which marks a live/open state, and the ticker, which
+   is a feed. Both stop under prefers-reduced-motion. Nothing else loops. */
 .dot--live {
   animation: pulse 3.4s ease-in-out infinite;
 }
@@ -806,10 +812,15 @@ em {
 }
 
 .scroll-rail__tick {
-  width: 10px;
+  /* Drawn at full length and scaled: width is a layout property, and only
+     transform and opacity are allowed to animate. */
+  width: 26px;
   height: 1px;
   background: var(--hairline-bright);
-  transition: width 260ms var(--ease), background var(--quick) ease-out;
+  transform: scaleX(0.385);
+  transform-origin: right;
+  transition: transform var(--t-200) var(--ease),
+    background var(--quick) ease-out;
 }
 
 .scroll-rail a[aria-current='true'] .scroll-rail__num {
@@ -818,13 +829,13 @@ em {
 }
 
 .scroll-rail a[aria-current='true'] .scroll-rail__tick {
-  width: 26px;
+  transform: scaleX(1);
   background: var(--signal);
 }
 
 .scroll-rail a:hover .scroll-rail__tick,
 .scroll-rail a:focus-visible .scroll-rail__tick {
-  width: 26px;
+  transform: scaleX(1);
   background: var(--ink-3);
 }
 
@@ -865,7 +876,7 @@ em {
   background: var(--signal);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 320ms var(--ease);
+  transition: transform var(--enter) var(--ease);
 }
 
 .btn:hover {
@@ -878,7 +889,7 @@ em {
 }
 
 .btn__arrow {
-  transition: translate 260ms var(--ease);
+  transition: translate var(--t-200) var(--ease);
 }
 
 .btn:hover .btn__arrow {
@@ -1060,7 +1071,7 @@ em {
 
 .js .reveal .strip__fill {
   transform: scaleX(0);
-  transition: transform 860ms var(--ease) 200ms;
+  transition: transform var(--enter) var(--ease) 200ms;
 }
 
 .js .reveal.is-in .strip__fill {
@@ -1192,7 +1203,7 @@ em {
   background: var(--signal);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 260ms var(--ease);
+  transition: transform var(--t-200) var(--ease);
 }
 
 .nav-link:hover,
@@ -1245,7 +1256,8 @@ em {
 .js .stagger > * {
   opacity: 0;
   transform: translateY(12px);
-  transition: opacity 360ms var(--ease), transform 360ms var(--ease);
+  transition: opacity var(--enter) var(--ease),
+    transform var(--enter) var(--ease);
 }
 
 .js .stagger.is-in > * {
@@ -1253,12 +1265,11 @@ em {
   transform: none;
 }
 
-.js .stagger.is-in > *:nth-child(1) { transition-delay: 20ms; }
-.js .stagger.is-in > *:nth-child(2) { transition-delay: 65ms; }
-.js .stagger.is-in > *:nth-child(3) { transition-delay: 110ms; }
-.js .stagger.is-in > *:nth-child(4) { transition-delay: 155ms; }
+.js .stagger.is-in > *:nth-child(2) { transition-delay: 50ms; }
+.js .stagger.is-in > *:nth-child(3) { transition-delay: 100ms; }
+.js .stagger.is-in > *:nth-child(4) { transition-delay: 150ms; }
 .js .stagger.is-in > *:nth-child(5) { transition-delay: 200ms; }
-.js .stagger.is-in > *:nth-child(n + 6) { transition-delay: 240ms; }
+.js .stagger.is-in > *:nth-child(n + 6) { transition-delay: 250ms; }
 
 @media (prefers-reduced-motion: reduce) {
   html {
